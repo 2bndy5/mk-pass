@@ -1,5 +1,7 @@
 {
     "rust-analyzer.cargo.features": [
-        "bin"
+        "bin",
+        "py-binding",
+        "node-binding"
     ]
 }
