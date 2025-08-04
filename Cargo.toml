@@ -8,14 +8,18 @@ repository = "https://github.com/2bndy5/mk-pass"
 
 [lib]
 name = "mk_pass"
+crate-type = ["lib", "cdylib", "staticlib"]
 
 [dependencies]
 clap = { version = "4.5.42", features = ["derive"], optional = true }
+pyo3 = { version = "0.25.1", features = ["extension-module"], optional = true }
 rand = "0.9.2"
 
 [features]
 clap = ["dep:clap"]
 bin = ["clap"]
+pyo3 = ["dep:pyo3"]
+py-binding = ["pyo3", "clap"]
 
 [[bin]]
 name = "mk-pass"
