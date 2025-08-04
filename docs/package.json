@@ -1,0 +1,12 @@
+{
+  "name": "docs",
+  "packageManager": "yarn@4.9.2",
+  "private": true,
+  "scripts": {
+    "docs": "typedoc ../index.d.ts --out ./src/node-api"
+  },
+  "devDependencies": {
+    "typedoc": "^0.28.9",
+    "typescript": "^5.9.2"
+  }
+}

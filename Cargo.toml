@@ -12,6 +12,8 @@ crate-type = ["lib", "cdylib", "staticlib"]
 
 [dependencies]
 clap = { version = "4.5.42", features = ["derive"], optional = true }
+napi = { version = "3.1.6", optional = true }
+napi-derive = { version = "3.1.2", optional = true }
 pyo3 = { version = "0.25.1", features = ["extension-module"], optional = true }
 rand = "0.9.2"
 
@@ -20,8 +22,15 @@ clap = ["dep:clap"]
 bin = ["clap"]
 pyo3 = ["dep:pyo3"]
 py-binding = ["pyo3", "clap"]
+napi-build = ["dep:napi-build"]
+napi-derive = ["dep:napi-derive"]
+napi = ["dep:napi"]
+node-binding = ["napi-build", "clap", "napi", "napi-derive"]
 
 [[bin]]
 name = "mk-pass"
 path = "src/main.rs"
 required-features = ["bin"]
+
+[build-dependencies]
+napi-build = { version = "2.2.3", optional = true }

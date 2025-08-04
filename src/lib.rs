@@ -9,6 +9,9 @@ pub use config::PasswordRequirements;
 #[cfg(feature = "py-binding")]
 mod py_binding;
 
+#[cfg(feature = "node-binding")]
+mod node_binding;
+
 /// Generate a password given the constraints specified by `config`.
 ///
 /// This function will invoke [`PasswordRequirements::validate()`] to
