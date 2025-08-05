@@ -1,9 +1,0 @@
-.cargo
-npm
-.oxlint
-.prettierignore
-yarn.lock
-*.node
-.yarn
-tests
-renovate.json

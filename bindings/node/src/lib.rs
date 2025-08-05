@@ -1,4 +1,4 @@
-use clap::Parser;
+use ::mk_pass::clap::Parser;
 use napi_derive::napi;
 
 /// The function used as a native entrypoint for the executable script.
@@ -8,8 +8,8 @@ use napi_derive::napi;
     reason = "This function is exported in FFI binding, so it is used externally."
 )]
 pub fn main(args: Vec<String>) {
-    let config = crate::PasswordRequirements::parse_from(args);
-    let password = crate::generate_password(config);
+    let config = ::mk_pass::PasswordRequirements::parse_from(args);
+    let password = ::mk_pass::generate_password(config);
     println!("{password}");
 }
 
@@ -30,9 +30,9 @@ pub struct PasswordRequirements {
     pub first_is_letter: Option<bool>,
 }
 
-impl From<&PasswordRequirements> for crate::PasswordRequirements {
-    fn from(value: &PasswordRequirements) -> crate::PasswordRequirements {
-        crate::PasswordRequirements {
+impl From<&PasswordRequirements> for ::mk_pass::PasswordRequirements {
+    fn from(value: &PasswordRequirements) -> ::mk_pass::PasswordRequirements {
+        ::mk_pass::PasswordRequirements {
             length: value.length.unwrap_or(16) as u16,
             numbers: value.numbers.unwrap_or(1) as u16,
             specials: value.specials.unwrap_or(1) as u16,
@@ -41,8 +41,8 @@ impl From<&PasswordRequirements> for crate::PasswordRequirements {
     }
 }
 
-impl From<crate::PasswordRequirements> for PasswordRequirements {
-    fn from(value: crate::PasswordRequirements) -> PasswordRequirements {
+impl From<::mk_pass::PasswordRequirements> for PasswordRequirements {
+    fn from(value: ::mk_pass::PasswordRequirements) -> PasswordRequirements {
         PasswordRequirements {
             length: Some(value.length as i32),
             numbers: Some(value.numbers as i32),
@@ -103,12 +103,8 @@ impl From<crate::PasswordRequirements> for PasswordRequirements {
 /// );
 /// ```
 #[napi]
-#[allow(
-    dead_code,
-    reason = "This function is exported in FFI binding, so it is used externally."
-)]
 pub fn validate_requirements(config: PasswordRequirements) -> PasswordRequirements {
-    let req = crate::PasswordRequirements::from(&config);
+    let req = ::mk_pass::PasswordRequirements::from(&config);
     req.validate().into()
 }
 
@@ -117,10 +113,60 @@ pub fn validate_requirements(config: PasswordRequirements) -> PasswordRequiremen
 /// This function will invoke {@link validateRequirements} on the given `config`
 /// to ensure basic password requirements are met.
 #[napi]
-#[allow(
-    dead_code,
-    reason = "This function is exported in FFI binding, so it is used externally."
-)]
 pub fn generate_password(config: PasswordRequirements) -> String {
-    crate::generate_password(crate::PasswordRequirements::from(&config))
+    ::mk_pass::generate_password(::mk_pass::PasswordRequirements::from(&config))
+}
+
+/// A class of factory constructors to fetch the sample sets used
+/// when generating a password.
+#[napi]
+pub struct Samples {
+    pub set: Vec<String>,
+}
+
+#[napi]
+impl Samples {
+    /// The list of possible special characters used when generating a password.
+    #[napi(factory)]
+    pub fn special_characters() -> Self {
+        Self {
+            set: ::mk_pass::SPECIAL_CHARACTERS
+                .iter()
+                .map(|v| v.to_string())
+                .collect::<Vec<String>>(),
+        }
+    }
+
+    /// The list of possible numbers used when generating a password.
+    #[napi(factory)]
+    pub fn numbers() -> Self {
+        Self {
+            set: ::mk_pass::NUMBERS
+                .iter()
+                .map(|v| v.to_string())
+                .collect::<Vec<String>>(),
+        }
+    }
+
+    /// The list of possible lowercase letters used when generating a password.
+    #[napi(factory)]
+    pub fn lowercase() -> Self {
+        Self {
+            set: ::mk_pass::LOWERCASE
+                .iter()
+                .map(|v| v.to_string())
+                .collect::<Vec<String>>(),
+        }
+    }
+
+    /// The list of possible uppercase letters used when generating a password.
+    #[napi(factory)]
+    pub fn uppercase() -> Self {
+        Self {
+            set: ::mk_pass::UPPERCASE
+                .iter()
+                .map(|v| v.to_string())
+                .collect::<Vec<String>>(),
+        }
+    }
 }

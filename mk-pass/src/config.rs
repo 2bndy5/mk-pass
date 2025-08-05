@@ -3,9 +3,6 @@ use crate::helpers::{LOWERCASE, NUMBERS, SPECIAL_CHARACTERS, UPPERCASE};
 #[cfg(feature = "clap")]
 use clap::Parser;
 
-#[cfg(feature = "py-binding")]
-use pyo3::prelude::*;
-
 /// A structure to describe password requirements.
 #[cfg_attr(
     feature = "clap",
@@ -13,10 +10,6 @@ use pyo3::prelude::*;
     command(about = "Generate a password comprehensively.", version, long_about = None)
 )]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[cfg_attr(
-    feature = "py-binding",
-    pyclass(module = "mk_pass", get_all, frozen, eq)
-)]
 pub struct PasswordRequirements {
     /// The length of the password.
     #[cfg_attr(feature = "clap", arg(long, short, default_value = "16"))]

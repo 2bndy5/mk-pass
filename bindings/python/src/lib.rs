@@ -1,5 +1,4 @@
-use crate::PasswordRequirements;
-use clap::Parser;
+use ::mk_pass::clap::Parser;
 use pyo3::prelude::*;
 
 /// The function used as an entrypoint for the executable script.
@@ -12,10 +11,27 @@ fn main(py: Python) -> PyResult<()> {
         .import("sys")?
         .getattr("argv")?
         .extract::<Vec<String>>()?;
-    let config = PasswordRequirements::parse_from(args);
-    let password = generate_password(&config);
+    let config = ::mk_pass::PasswordRequirements::parse_from(args);
+    let password = generate_password(&config.into());
     println!("{password}");
     Ok(())
+}
+
+/// A structure to describe password requirements.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[pyclass(module = "mk_pass", get_all, frozen, eq)]
+pub struct PasswordRequirements {
+    /// The length of the password.
+    pub length: u16,
+
+    /// How many numeric characters should the password contain?
+    pub numbers: u16,
+
+    /// How many special characters should the password contain?
+    pub specials: u16,
+
+    /// Should the first character always be a letter?
+    pub first_is_letter: bool,
 }
 
 #[pymethods]
@@ -79,9 +95,31 @@ impl PasswordRequirements {
     ///     >>> req.validate()
     ///     PasswordRequirements { length: 16, numbers: 13, specials: 1, first_is_letter: true }
     ///     ```
-    #[pyo3(name = "validate")]
-    pub fn validate_py(&self) -> Self {
-        (*self).validate()
+    pub fn validate(&self) -> Self {
+        let config: ::mk_pass::PasswordRequirements = self.into();
+        config.validate().into()
+    }
+}
+
+impl From<::mk_pass::PasswordRequirements> for PasswordRequirements {
+    fn from(value: ::mk_pass::PasswordRequirements) -> Self {
+        Self {
+            length: value.length,
+            numbers: value.numbers,
+            specials: value.specials,
+            first_is_letter: value.first_is_letter,
+        }
+    }
+}
+
+impl From<&PasswordRequirements> for ::mk_pass::PasswordRequirements {
+    fn from(value: &PasswordRequirements) -> Self {
+        Self {
+            length: value.length,
+            numbers: value.numbers,
+            specials: value.specials,
+            first_is_letter: value.first_is_letter,
+        }
     }
 }
 
@@ -92,7 +130,7 @@ impl PasswordRequirements {
 /// to ensure basic password requirements are met.
 #[pyfunction]
 pub fn generate_password(config: &PasswordRequirements) -> String {
-    crate::generate_password(config.to_owned())
+    ::mk_pass::generate_password(config.into())
 }
 
 /// A python package binding the mk-pass library
@@ -102,5 +140,9 @@ pub fn mk_pass(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(generate_password, m)?)?;
     m.add_class::<PasswordRequirements>()?;
     m.add_function(wrap_pyfunction!(main, m)?)?;
+    m.add("SPECIAL_CHARACTERS", ::mk_pass::SPECIAL_CHARACTERS)?;
+    m.add("NUMBERS", ::mk_pass::NUMBERS)?;
+    m.add("LOWERCASE", ::mk_pass::LOWERCASE)?;
+    m.add("UPPERCASE", ::mk_pass::UPPERCASE)?;
     Ok(())
 }

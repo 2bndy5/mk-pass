@@ -1,59 +1,17 @@
 {
-  "name": "@mk-pass/mk-pass",
-  "version": "0.1.0",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "readme": "README.md",
-  "napi": {
-    "binaryName": "mk-pass",
-    "targets": [
-      "x86_64-pc-windows-msvc",
-      "x86_64-apple-darwin",
-      "x86_64-unknown-linux-gnu",
-      "x86_64-unknown-linux-musl",
-      "aarch64-unknown-linux-gnu",
-      "i686-pc-windows-msvc",
-      "armv7-unknown-linux-gnueabihf",
-      "aarch64-apple-darwin",
-      "x86_64-unknown-freebsd",
-      "aarch64-unknown-linux-musl",
-      "aarch64-pc-windows-msvc"
-    ]
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "@napi-rs/cli": "3.0.1",
-    "ava": "^6.4.1",
-    "oxlint": "^1.7.0"
-  },
-  "ava": {
-    "timeout": "3m"
-  },
-  "engines": {
-    "node": ">= 10.16.0 < 11 || >= 11.8.0 < 12 || >= 12.0.0"
-  },
-  "bin": "cli.js",
+  "name": "@mk-pass/ws",
   "workspaces": [
-    "docs"
+    "docs",
+    "bindings/node"
   ],
   "scripts": {
-    "artifacts": "napi artifacts",
-    "build": "napi build --platform --release --features node-binding",
-    "build:debug": "napi build --platform --features node-binding",
-    "prepublishOnly": "napi prepublish --no-gh-release",
-    "lint": "oxlint",
-    "test": "ava",
+    "artifacts": "cd bindings/node && yarn artifacts",
+    "build": "cd bindings/node && yarn build",
+    "build:debug": "cd bindings/node && yarn build:debug",
+    "lint": "cd bindings/node && yarn lint",
+    "format": "cd bindings/node && yarn format",
+    "test": "cd bindings/node && yarn test",
     "docs": "cd docs && yarn docs"
   },
-  "packageManager": "yarn@4.9.2",
-  "description": "Node.js binding for the mk-pass library written in rust.",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/2bndy5/mk-pass.git"
-  },
-  "author": "Brendan Doherty",
-  "bugs": {
-    "url": "https://github.com/2bndy5/mk-pass/issues"
-  },
-  "homepage": "https://github.com/2bndy5/mk-pass#readme"
+  "packageManager": "yarn@4.9.2"
 }

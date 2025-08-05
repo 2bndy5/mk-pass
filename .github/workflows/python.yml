@@ -5,22 +5,22 @@ on:
   push:
     branches: [main]
     paths:
-      - '**.{rs,pyi}'
-      - tests/**
-      - pyproject.toml
+      - '**.{rs,pyi,py}'
+      - '**Cargo.{toml,lock}'
       - uv.lock
-      - Cargo.{toml,lock}
+      - bindings/python/pyproject.toml
+      - '!bindings/node/**'
       - .github/workflows/python.yml
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
   pull_request:
     branches: [main]
     paths:
-      - '**.{rs,pyi}'
-      - tests/**
-      - pyproject.toml
+      - '**.{rs,pyi,py}'
+      - '**Cargo.{toml,lock}'
       - uv.lock
-      - Cargo.{toml,lock}
+      - bindings/python/pyproject.toml
+      - '!bindings/node/**'
       - .github/workflows/python.yml
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -52,13 +52,14 @@ jobs:
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
+          working-directory: bindings/python
           sccache: 'true'
           manylinux: auto
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheels-linux-${{ matrix.platform.target }}
-          path: dist/*
+          path: bindings/python/dist/*
 
   windows:
     runs-on: ${{ matrix.platform.runner }}
@@ -80,12 +81,13 @@ jobs:
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
+          working-directory: bindings/python
           sccache: 'true'
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheels-windows-${{ matrix.platform.target }}
-          path: dist/*
+          path: bindings/python/dist/*
 
   macos:
     runs-on: ${{ matrix.platform.runner }}
@@ -107,12 +109,13 @@ jobs:
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
+          working-directory: bindings/python
           sccache: 'true'
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
           name: wheels-macos-${{ matrix.platform.target }}
-          path: dist/*
+          path: bindings/python/dist/*
 
   sdist:
     runs-on: ubuntu-latest
@@ -126,11 +129,12 @@ jobs:
         with:
           command: sdist
           args: --out dist
+          working-directory: bindings/python
       - name: Upload sdist
         uses: actions/upload-artifact@v4
         with:
           name: wheels-sdist
-          path: dist/*
+          path: bindings/python/dist/*
 
   test:
     runs-on: ubuntu-latest
@@ -152,9 +156,9 @@ jobs:
       - name: Setup Rust
         run: rustup update --no-self-update
       - name: Install Workflow Dependencies
-        run: uv sync --group test
+        run: uv sync --package mk-pass --group test
       - name: Run pytest
-        run: uv run pytest -v --color yes
+        run: uv run --directory bindings/python pytest -v --color yes
 
   release:
     runs-on: ubuntu-latest

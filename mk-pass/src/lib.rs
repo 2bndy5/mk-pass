@@ -1,4 +1,4 @@
-#![doc = include_str!("../README.md")]
+#![doc = include_str!("../../README.md")]
 use rand::prelude::*;
 mod helpers;
 use helpers::{CharKind, CountTypesUsed};
@@ -6,11 +6,8 @@ pub use helpers::{LOWERCASE, NUMBERS, SPECIAL_CHARACTERS, UPPERCASE};
 mod config;
 pub use config::PasswordRequirements;
 
-#[cfg(feature = "py-binding")]
-mod py_binding;
-
-#[cfg(feature = "node-binding")]
-mod node_binding;
+#[cfg(feature = "clap")]
+pub use clap;
 
 /// Generate a password given the constraints specified by `config`.
 ///

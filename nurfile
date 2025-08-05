@@ -7,9 +7,24 @@ def --wrapped run-cmd [...cmd: string] {
     ) {
         ($cmd | first 2) | str join ' '
     } else if ($cmd | first) == 'uv' {
-        let sub_cmd = $cmd.1
+        mut sub_cmd = $cmd.1
         if ($sub_cmd == 'run') {
-            $cmd.2
+            # filter out options to `uv run`
+            mut is_opt = false
+            for arg in ($cmd | skip 2) {
+                if ($arg | str starts-with '--') {
+                    $is_opt = true
+                } else if $is_opt {
+                    # does not begin with '--' but the previous arg did.
+                    # toggle flag off and skip this arg
+                    $is_opt = false
+                } else {
+                    # found the `uv run <command>`
+                    $sub_cmd = $arg
+                    break
+                }
+            }
+            $sub_cmd
         } else {
             ($cmd | first 2) | str join ' '
         }
@@ -27,10 +42,26 @@ def --wrapped run-cmd [...cmd: string] {
 # Requires the following installed:
 # - cargo-llvm-cov
 # - cargo-nextest
+#
+# This also tests the FFI bindings, so
+# it invokes `uv` and `yarn` to ensure
+# the bindings (and their dependencies) are installed .
+#
 def "nur test" [
     --clean (-c) # Purge previous test artifacts. Use to refresh coverage data.
     --profile (-p): string = 'default' # The profile defined in .config/nextest.toml
 ] {
+    # ensure bindings are installed
+    if ($clean) {
+        nur install
+    } else {
+        nur install --dirty
+    }
+
+    # Now test the bindings
+    run-cmd uv run --directory bindings/python pytest -v
+    run-cmd yarn test
+
     if $clean {
         run-cmd cargo llvm-cov clean
     }
@@ -60,16 +91,17 @@ def --wrapped "nur test llvm-cov" [
 def "nur install" [
     --dirty (-d), # skip building binding if already built.
 ] {
-    let built_node = "index.d.ts" | path exists
+    let built_node = "bindings/node/index.d.ts" | path exists
     if (not $dirty) or (not $built_node) {
         run-cmd yarn build:debug
     }
     let built_python = ^uv pip show mk-pass | complete | get exit_code | ($in == 0)
     if (not $dirty) or (not $built_python) {
-        run-cmd uv sync --all-groups --reinstall-package mk-pass
+        run-cmd uv sync --package mk-pass --all-groups --reinstall-package mk-pass
     }
 }
 
+alias "nur i" = nur install
 
 # Generate lcov.info
 #
@@ -83,16 +115,26 @@ def "nur test lcov" [] {
 def "nur docs" [
     --open (-o) # Open the built docs in your browser
 ] {
-    mut cmd = [cargo doc --no-deps --lib]
+    mut cargo_doc_args = [-p mk-pass --lib --no-deps --target-dir docs/src/rust-api]
     if $open {
-        $cmd = $cmd | append '--open'
+        $cargo_doc_args = $cargo_doc_args | append '--open'
     }
-    run-cmd ...$cmd
+    run-cmd cargo doc ...$cargo_doc_args
+
+    run-cmd yarn docs
+    if $open {
+        start docs/src/node-api/index.html
+    }
 }
 
 
 # Run clippy and rustfmt (on packages only)
 def "nur lint" [] {
+    run-cmd yarn lint
+    run-cmd yarn format
+    run-cmd uv run --directory bindings/python ruff check
+    run-cmd uv run --directory bindings/python ruff format
+    run-cmd uv run --directory bindings/python mypy
     run-cmd ...(
         [cargo clippy --fix --allow-dirty --allow-staged --all-features]
     )

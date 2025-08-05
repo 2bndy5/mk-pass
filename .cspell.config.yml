@@ -2,6 +2,7 @@ version: "0.2"
 language: en
 words:
   - addnab
+  - androideabi
   - armv
   - autoupdate
   - binstall
@@ -11,6 +12,8 @@ words:
   - clippy
   - Doherty
   - dtolnay
+  - eabi
+  - emnapi
   - endfor
   - endmacro
   - getattr
@@ -22,15 +25,20 @@ words:
   - libnghttp
   - manylinux
   - maturin
+  - mkdocs
   - msvc
   - multiarch
+  - musleabihf
   - mypy
   - napi
   - nextest
   - nonconstructor
   - nonoctal
   - npmjs
+  - nurfile
   - nushell
+  - ohos
+  - openharmony
   - orhun
   - oxlint
   - patchelf
@@ -43,6 +51,7 @@ words:
   - pyproject
   - pytest
   - repr
+  - riscv
   - rustc
   - rustflags
   - rustup
@@ -52,7 +61,11 @@ words:
   - taiki
   - timeit
   - topo
+  - tybys
   - venv
+  - WASI
+  - wasip
+  - yarnrc
   - zigbuild
 ignorePaths:
   - .env/**

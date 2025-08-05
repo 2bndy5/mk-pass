@@ -8,7 +8,8 @@ env:
 on:
   push:
     branches: [main]
-    tags: ['*']
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
     paths:
       - crates/**/*.rs
       - bindings/node/**
@@ -53,11 +54,20 @@ jobs:
             target: armv7-unknown-linux-gnueabihf
             build: yarn build --target armv7-unknown-linux-gnueabihf --use-napi-cross
           - host: ubuntu-latest
+            target: aarch64-linux-android
+            build: yarn build --target aarch64-linux-android
+          - host: ubuntu-latest
+            target: armv7-linux-androideabi
+            build: yarn build --target armv7-linux-androideabi
+          - host: ubuntu-latest
             target: aarch64-unknown-linux-musl
             build: yarn build --target aarch64-unknown-linux-musl -x
           - host: windows-latest
             target: aarch64-pc-windows-msvc
             build: yarn build --target aarch64-pc-windows-msvc
+          - host: ubuntu-latest
+            target: wasm32-wasip1-threads
+            build: yarn build --target wasm32-wasip1-threads
 
     name: build ${{ matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
@@ -108,7 +118,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ${{ env.ARTIFACT_PATH }}
+          path: |
+            ${{ env.ARTIFACT_PATH }}.*.node
+            ${{ env.ARTIFACT_PATH }}.*.wasm
           if-no-files-found: error
       - name: Upload generated index.* as artifact
         if: matrix.settings.target == 'armv7-unknown-linux-gnueabihf'
@@ -162,7 +174,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-freebsd
-          path: ${{ env.ARTIFACT_PATH }}
+          path: ${{ env.ARTIFACT_PATH }}.*.node
           if-no-files-found: error
 
   universal-macOS:
@@ -195,7 +207,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-universal-apple-darwin
-          path: ${{ env.ARTIFACT_PATH }}
+          path: ${{ env.ARTIFACT_PATH }}.*.node
           if-no-files-found: error
   test-macOS-windows-binding:
     name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
@@ -305,15 +317,43 @@ jobs:
       - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
         if: ${{ contains(matrix.target, 'armv7') }}
       - name: Test bindings
-        if: matrix.target != 'x86_64-unknown-linux-gnu'
+        # if: matrix.target != 'x86_64-unknown-linux-gnu'
         uses: addnab/docker-run-action@v3
         with:
           image: ${{ steps.docker.outputs.IMAGE }}
           options: '-v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }} --platform ${{ steps.docker.outputs.PLATFORM }}'
           run: yarn test
-      - name: Test x86_64-unknown-linux-gnu
-        if: matrix.target == 'x86_64-unknown-linux-gnu'
+      # - name: Test x86_64-unknown-linux-gnu
+      #   if: matrix.target == 'x86_64-unknown-linux-gnu'
+      #   run: yarn test
+  test-wasi:
+    name: Test WASI target
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - name: Install dependencies
+        run: |
+          yarn config set supportedArchitectures.cpu "wasm32"
+          yarn install
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: bindings-wasm32-wasip1-threads
+          path: bindings/node
+      - name: List packages
+        run: ls -R .
+        shell: bash
+      - name: Test bindings
         run: yarn test
+        env:
+          NAPI_RS_FORCE_WASI: 1
   publish:
     name: Publish
     if: startsWith(github.ref, 'refs/tags/')
@@ -325,6 +365,9 @@ jobs:
       - build
       - build-freebsd
       - universal-macOS
+      - test-macOS-windows-binding
+      - test-linux-binding
+      - test-wasi
     steps:
       - uses: actions/checkout@v4
       - name: Setup node
@@ -352,7 +395,7 @@ jobs:
       - name: List packages
         run: ls -R ./bindings/node/npm
         shell: bash
-      - run: yarn format:index
+      - run: yarn format
       - name: Publish
         working-directory: bindings/node
         run: |

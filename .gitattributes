@@ -25,3 +25,6 @@
 *.json text eol=lf
 *.clang-tidy text eol=lf
 *.clang-format text eol=lf
+*.nu text eol=lf
+nurfile text eol=lf
+LICENSE text eol=lf

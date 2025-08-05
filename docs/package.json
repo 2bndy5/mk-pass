@@ -1,9 +1,9 @@
 {
-  "name": "docs",
+  "name": "mk-pass-docs",
   "packageManager": "yarn@4.9.2",
   "private": true,
   "scripts": {
-    "docs": "typedoc ../index.d.ts --out ./src/node-api"
+    "docs": "typedoc ../bindings/node/index.d.ts --out ./src/node-api"
   },
   "devDependencies": {
     "typedoc": "^0.28.9",

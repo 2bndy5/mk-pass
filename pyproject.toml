@@ -1,67 +1,11 @@
-[build-system]
-requires = ["maturin>=1.4,<2.0"]
-build-backend = "maturin"
-
 [project]
-name = "mk-pass"
-description = "A comprehensive password generator."
-readme = "README.md"
-keywords = ["password", "generator", "random", "comprehensive", "rust"]
-license = {text = "MIT License"}
+name = "mk-pass-ws"
+version = "0.0.0+private-virtual"
 requires-python = ">=3.9"
-authors = [
-    { name = "Brendan Doherty", email = "2bndy5@gmail.com" },
-]
-classifiers = [
-    # https://pypi.org/pypi?%3Aaction=list_classifiers
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "Intended Audience :: System Administrators",
-    "Intended Audience :: Information Technology",
-    "Natural Language :: English",
-    "Operating System :: Microsoft :: Windows",
-    "Operating System :: POSIX :: Linux",
-    "Operating System :: MacOS",
-    "Programming Language :: Python :: 3",
-    "Topic :: Software Development :: Build Tools",
-    "Programming Language :: Rust",
-    "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
-]
-dynamic = ["version"]
+dependencies = ["mk-pass"]
 
-[project.scripts]
-mk-pass = "mk_pass:main"
+[tool.uv.sources]
+mk-pass = { workspace = true }
 
-[project.urls]
-source = "https://github.com/2bndy5/mk-pass"
-tracker = "https://github.com/2bndy5/mk-pass/issues"
-
-[dependency-groups]
-dev = [
-    "maturin==1.9.1",
-    "mypy==1.17.0",
-    "patchelf==0.17.2.2 ; sys_platform == 'linux'",
-    "pre-commit>=4.2.0",
-    "ruff>=0.12.7",
-]
-test = [
-    "pytest>=8.4.1",
-]
-
-[tool.maturin]
-features = ["py-binding"]
-include = [
-    {path = "mk_pass.pyi", format = "sdist"},
-]
-exclude = [
-    {path = "**/tests/**", format="sdist"},
-    {path = "**/examples/**", format="sdist"},
-    {path = "**/docs/**", format="sdist"},
-]
-
-[tool.ruff]
-src = ["tests/test_pass_gen.py"]
-
-[tool.mypy]
-files = ["tests", "mk_pass.pyi"]
+[tool.uv.workspace]
+members = ["bindings/python"]

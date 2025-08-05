@@ -1,18 +1,26 @@
-import re
 import sys
 import pytest
-from mk_pass import generate_password, PasswordRequirements, main
+from mk_pass import (
+    generate_password,
+    PasswordRequirements,
+    main,
+    LOWERCASE,
+    UPPERCASE,
+    SPECIAL_CHARACTERS,
+    NUMBERS,
+)
 
 
 def assert_password_satisfies_default(password: str):
     first = password[0]
-    assert first.isalpha()
+    assert first in LOWERCASE or first in UPPERCASE
     assert len(password) == 16
-    letters = len(re.findall("[a-zA-Z]", password))
-    assert letters == 14
-    numbers = len(re.findall("[0-9]", password))
+    lowercase = sum([1 for x in password if x in LOWERCASE])
+    uppercase = sum([1 for x in password if x in UPPERCASE])
+    assert uppercase + lowercase == 14
+    numbers = sum([1 for x in password if x in NUMBERS])
     assert numbers == 1
-    specials = len(password) - numbers - letters
+    specials = sum([1 for x in password if x in SPECIAL_CHARACTERS])
     assert specials == 1
 
 

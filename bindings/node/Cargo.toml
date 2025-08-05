@@ -1,0 +1,21 @@
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[package]
+name = "mk-pass-node"
+description.workspace = true
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+napi = "3.1.6"
+napi-derive = "3.1.2"
+mk-pass = { path = "../../mk-pass", features = ["clap"] }
+
+[build-dependencies]
+napi-build = "2.2.3"
