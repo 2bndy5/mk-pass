@@ -1,4 +1,4 @@
-use crate::helpers::{LOWERCASE, NUMBERS, SPECIAL_CHARACTERS, UPPERCASE};
+use crate::helpers::{DECIMAL, LOWERCASE, SPECIAL_CHARACTERS, UPPERCASE};
 
 #[cfg(feature = "clap")]
 use clap::Parser;
@@ -15,9 +15,9 @@ pub struct PasswordRequirements {
     #[cfg_attr(feature = "clap", arg(long, short, default_value = "16"))]
     pub length: u16,
 
-    /// How many numeric characters should the password contain?
+    /// How many decimal integer characters should the password contain?
     #[cfg_attr(feature = "clap", arg(long, short, default_value = "1"))]
-    pub numbers: u16,
+    pub decimal: u16,
 
     /// How many special characters should the password contain?
     #[cfg_attr(feature = "clap", arg(long, short, default_value = "1"))]
@@ -50,15 +50,15 @@ impl PasswordRequirements {
     /// 1. `length` is not less than 10
     /// 2. To avoid repetitions, `length` is not more than
     ///
-    ///    - 52 if only letters (no numbers or special characters) are used
-    ///    - 62 if only letters and numbers are used
+    ///    - 52 if only letters (no decimal integers or special characters) are used
+    ///    - 62 if only letters and decimal integers are used
     ///    - 68 if only letters and special characters are used
-    ///    - 78 if letters, numbers, and special characters are used
+    ///    - 78 if letters, decimal integers, and special characters are used
     /// 3. `specials` character count does not overrule the required number of
     ///
     ///    - letters (2; 1 uppercase and 1 lowercase)
-    ///    - numbers (if `numbers` is specified as non-zero value)
-    /// 4. `numbers` character count does not overrule the required number of
+    ///    - decimal integers (if `decimal` is specified as non-zero value)
+    /// 4. `decimal` character count does not overrule the required number of
     ///
     ///    - letters (2; 1 uppercase and 1 lowercase)
     ///    - special characters (if `specials` is specified as non-zero value)
@@ -66,7 +66,7 @@ impl PasswordRequirements {
     /// # About resolving conflicts
     ///
     /// If this function finds a conflict between the specified number of
-    /// `specials` characters and `numbers`, then numbers takes precedence.
+    /// `specials` characters and `decimal`, then decimal integers takes precedence.
     ///
     /// For example:
     ///
@@ -75,13 +75,13 @@ impl PasswordRequirements {
     /// let req = PasswordRequirements {
     ///     length: 16,
     ///     specials: 16,
-    ///     numbers: 16,
+    ///     decimal: 16,
     ///     ..Default::default()
     /// };
     /// let expected = PasswordRequirements {
     ///     length: 16,
     ///     specials: 1,
-    ///     numbers: 13,
+    ///     decimal: 13,
     ///     ..Default::default()
     /// };
     /// assert_eq!(req.validate(), expected);
@@ -98,19 +98,19 @@ impl PasswordRequirements {
                     }
                 }
                 + {
-                    if self.numbers > 0 {
-                        NUMBERS.len() as u16
+                    if self.decimal > 0 {
+                        DECIMAL.len() as u16
                     } else {
                         0
                     }
                 },
         );
         let non_letter_max_len = len - 2;
-        let max_special = non_letter_max_len - self.numbers.min(non_letter_max_len - 1);
-        let max_numbers = non_letter_max_len - max_special;
+        let max_special = non_letter_max_len - self.decimal.min(non_letter_max_len - 1);
+        let max_decimal = non_letter_max_len - max_special;
         Self {
             length: len,
-            numbers: self.numbers.min(max_numbers),
+            decimal: self.decimal.min(max_decimal),
             specials: self.specials.min(max_special),
             first_is_letter: self.first_is_letter,
         }
@@ -122,7 +122,7 @@ impl Default for PasswordRequirements {
     fn default() -> Self {
         Self {
             length: 16,
-            numbers: 1,
+            decimal: 1,
             specials: 1,
             first_is_letter: true,
         }

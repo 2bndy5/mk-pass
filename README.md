@@ -10,11 +10,10 @@ when generating a password:
 
 1. No characters are repeated.
 2. Ensure at least one of each type of character is present:
-
-   - uppercase letters
-   - lowercase letters
-   - numbers (if permitted)
-   - special characters (if permitted)
+    - uppercase letters
+    - lowercase letters
+    - decimal integers (if permitted)
+    - special characters (if permitted)
 3. Ensure the first character is a letter (if enabled).
    When enabled, the first character will be either a uppercase or
    lowercase alphabetical letter.

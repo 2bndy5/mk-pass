@@ -3,8 +3,8 @@ pub const SPECIAL_CHARACTERS: [char; 16] = [
     '-', '.', '/', '\\', ':', '\'', '+', '&', ',', '@', '$', '!', '_', '#', '%', '~',
 ];
 
-/// The list of possible numbers used when generating a password.
-pub const NUMBERS: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+/// The list of possible decimal used when generating a password.
+pub const DECIMAL: [char; 10] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 /// The list of possible uppercase letters used when generating a password.
 pub const UPPERCASE: [char; 26] = [
@@ -22,7 +22,7 @@ pub const LOWERCASE: [char; 26] = [
 pub enum CharKind {
     Uppercase,
     Lowercase,
-    Number,
+    Decimal,
     Special,
 }
 
@@ -31,7 +31,7 @@ impl CharKind {
         match self {
             CharKind::Uppercase => &UPPERCASE,
             CharKind::Lowercase => &LOWERCASE,
-            CharKind::Number => &NUMBERS,
+            CharKind::Decimal => &DECIMAL,
             CharKind::Special => &SPECIAL_CHARACTERS,
         }
     }

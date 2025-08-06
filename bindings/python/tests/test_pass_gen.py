@@ -7,7 +7,7 @@ from mk_pass import (
     LOWERCASE,
     UPPERCASE,
     SPECIAL_CHARACTERS,
-    NUMBERS,
+    DECIMAL,
 )
 
 
@@ -18,8 +18,8 @@ def assert_password_satisfies_default(password: str):
     lowercase = sum([1 for x in password if x in LOWERCASE])
     uppercase = sum([1 for x in password if x in UPPERCASE])
     assert uppercase + lowercase == 14
-    numbers = sum([1 for x in password if x in NUMBERS])
-    assert numbers == 1
+    decimal = sum([1 for x in password if x in DECIMAL])
+    assert decimal == 1
     specials = sum([1 for x in password if x in SPECIAL_CHARACTERS])
     assert specials == 1
 
@@ -31,8 +31,8 @@ def test_password() -> None:
 
 
 def test_config() -> None:
-    config = PasswordRequirements(numbers=15, specials=15)
-    expected = PasswordRequirements(numbers=13, specials=1)
+    config = PasswordRequirements(decimal=15, specials=15)
+    expected = PasswordRequirements(decimal=13, specials=1)
     validated = config.validate()
     assert validated == expected
 

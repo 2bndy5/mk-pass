@@ -3,10 +3,6 @@ use napi_derive::napi;
 
 /// The function used as a native entrypoint for the executable script.
 #[napi]
-#[allow(
-    dead_code,
-    reason = "This function is exported in FFI binding, so it is used externally."
-)]
 pub fn main(args: Vec<String>) {
     let config = ::mk_pass::PasswordRequirements::parse_from(args);
     let password = ::mk_pass::generate_password(config);
@@ -21,7 +17,7 @@ pub struct PasswordRequirements {
     pub length: Option<i32>,
 
     /// How many numeric characters should the password contain?
-    pub numbers: Option<i32>,
+    pub decimal: Option<i32>,
 
     /// How many special characters should the password contain?
     pub specials: Option<i32>,
@@ -34,7 +30,7 @@ impl From<&PasswordRequirements> for ::mk_pass::PasswordRequirements {
     fn from(value: &PasswordRequirements) -> ::mk_pass::PasswordRequirements {
         ::mk_pass::PasswordRequirements {
             length: value.length.unwrap_or(16) as u16,
-            numbers: value.numbers.unwrap_or(1) as u16,
+            decimal: value.decimal.unwrap_or(1) as u16,
             specials: value.specials.unwrap_or(1) as u16,
             first_is_letter: value.first_is_letter.unwrap_or(true),
         }
@@ -45,7 +41,7 @@ impl From<::mk_pass::PasswordRequirements> for PasswordRequirements {
     fn from(value: ::mk_pass::PasswordRequirements) -> PasswordRequirements {
         PasswordRequirements {
             length: Some(value.length as i32),
-            numbers: Some(value.numbers as i32),
+            decimal: Some(value.decimal as i32),
             specials: Some(value.specials as i32),
             first_is_letter: Some(value.first_is_letter),
         }
@@ -63,23 +59,23 @@ impl From<::mk_pass::PasswordRequirements> for PasswordRequirements {
 /// 1. `length` is not less than 10
 /// 2. To avoid repetitions, `length` is not more than
 ///
-///    - 52 if only letters (no numbers or special characters) are used
-///    - 62 if only letters and numbers are used
+///    - 52 if only letters (no decimal integers or special characters) are used
+///    - 62 if only letters and decimal integers are used
 ///    - 68 if only letters and special characters are used
-///    - 78 if letters, numbers, and special characters are used
-/// 3. `special` character count does not overrule the required number of
+///    - 78 if letters, decimal integers, and special characters are used
+/// 3. `specials` character count does not overrule the required number of
 ///
 ///    - letters (2; 1 uppercase and 1 lowercase)
-///    - numbers (if `numbers` is specified as non-zero value)
-/// 4. `numbers` character count does not overrule the required number of
+///    - decimal integers (if `decimal` is specified as non-zero value)
+/// 4. `decimal` character count does not overrule the required number of
 ///
 ///    - letters (2; 1 uppercase and 1 lowercase)
-///    - special characters (if `special` is specified as non-zero value)
+///    - special characters (if `specials` is specified as non-zero value)
 ///
 /// # About resolving conflicts
 ///
 /// If this function finds a conflict between the specified number of
-/// `specials` characters and `numbers`, then `numbers` takes precedence.
+/// `specials` characters and `decimal`, then decimal integers takes precedence.
 ///
 /// For example:
 ///
@@ -89,11 +85,11 @@ impl From<::mk_pass::PasswordRequirements> for PasswordRequirements {
 /// let config = {
 ///   length: 16,
 ///   specials: 15,
-///   numbers: 15
+///   decimal: 15
 /// };
 /// let expected = {
 ///   length: 16,
-///   numbers: 13,
+///   decimal: 13,
 ///   specials: 1,
 ///   firstIsLetter: true
 /// };
@@ -137,18 +133,18 @@ impl Samples {
         }
     }
 
-    /// The list of possible numbers used when generating a password.
+    /// The possible decimal integer characters used when generating a password.
     #[napi(factory)]
-    pub fn numbers() -> Self {
+    pub fn decimal() -> Self {
         Self {
-            set: ::mk_pass::NUMBERS
+            set: ::mk_pass::DECIMAL
                 .iter()
                 .map(|v| v.to_string())
                 .collect::<Vec<String>>(),
         }
     }
 
-    /// The list of possible lowercase letters used when generating a password.
+    /// The possible lowercase (alphabetical) letters used when generating a password.
     #[napi(factory)]
     pub fn lowercase() -> Self {
         Self {

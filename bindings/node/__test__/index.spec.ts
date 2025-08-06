@@ -7,12 +7,12 @@ test('main', async (t) => {
 
 test('validateRequirements', (t) => {
   const config = {
-    numbers: 15,
+    decimal: 15,
     specials: 15,
   }
   const expected = {
     length: 16,
-    numbers: 13,
+    decimal: 13,
     specials: 1,
     firstIsLetter: true,
   }
@@ -21,7 +21,7 @@ test('validateRequirements', (t) => {
 
 const LOWERCASE = Samples.lowercase().set
 const UPPERCASE = Samples.uppercase().set
-const NUMBERS = Samples.numbers().set
+const DECIMAL = Samples.decimal().set
 const SPECIAL_CHARACTERS = Samples.specialCharacters().set
 
 function count_chars(set: Array<String>, phrase: String): number {
@@ -43,8 +43,8 @@ test('generatePassword', (t) => {
   const lowercase = count_chars(LOWERCASE, password)
   const uppercase = count_chars(UPPERCASE, password)
   t.is(lowercase + uppercase, 14)
-  const numbers = count_chars(NUMBERS, password)
-  t.is(numbers, 1)
+  const decimals = count_chars(DECIMAL, password)
+  t.is(decimals, 1)
   const specials = count_chars(SPECIAL_CHARACTERS, password)
   t.is(specials, 1)
 })

@@ -2,7 +2,7 @@
 use rand::prelude::*;
 mod helpers;
 use helpers::{CharKind, CountTypesUsed};
-pub use helpers::{LOWERCASE, NUMBERS, SPECIAL_CHARACTERS, UPPERCASE};
+pub use helpers::{DECIMAL, LOWERCASE, SPECIAL_CHARACTERS, UPPERCASE};
 mod config;
 pub use config::PasswordRequirements;
 
@@ -24,10 +24,10 @@ pub fn generate_password(config: PasswordRequirements) -> String {
     if config.specials > 0 {
         available_types.push(CharKind::Special);
     }
-    if config.numbers > 0 {
-        available_types.push(CharKind::Number);
+    if config.decimal > 0 {
+        available_types.push(CharKind::Decimal);
     }
-    let max_letters = len as u16 - config.numbers - config.specials;
+    let max_letters = len as u16 - config.decimal - config.specials;
     let max_lowercase = max_letters / 2;
     let max_uppercase = max_letters - max_lowercase;
 
@@ -65,9 +65,9 @@ pub fn generate_password(config: PasswordRequirements) -> String {
                     available_types = CharKind::pop_kind(available_types, &kind);
                 }
             }
-            CharKind::Number => {
+            CharKind::Decimal => {
                 used_types.number += 1;
-                if used_types.number == config.numbers {
+                if used_types.number == config.decimal {
                     available_types = CharKind::pop_kind(available_types, &kind);
                 }
             }
@@ -101,35 +101,35 @@ pub fn generate_password(config: PasswordRequirements) -> String {
 #[cfg(test)]
 mod test {
     use super::{PasswordRequirements, generate_password};
-    use crate::helpers::{LOWERCASE, NUMBERS, SPECIAL_CHARACTERS, UPPERCASE};
+    use crate::helpers::{DECIMAL, LOWERCASE, SPECIAL_CHARACTERS, UPPERCASE};
 
     fn count(output: &str) -> (usize, usize, usize, usize) {
-        let (mut uppers, mut lowers, mut numbers, mut specials) = (0, 0, 0, 0);
+        let (mut uppers, mut lowers, mut decimal, mut specials) = (0, 0, 0, 0);
         for ch in output.chars() {
             if LOWERCASE.contains(&ch) {
                 lowers += 1;
             } else if UPPERCASE.contains(&ch) {
                 uppers += 1;
-            } else if NUMBERS.contains(&ch) {
-                numbers += 1;
+            } else if DECIMAL.contains(&ch) {
+                decimal += 1;
             } else if SPECIAL_CHARACTERS.contains(&ch) {
                 specials += 1;
             }
         }
         println!(
-            "numbers: {numbers}, uppercase: {uppers}, lowercase: {lowers}, special: {specials}"
+            "decimal: {decimal}, uppercase: {uppers}, lowercase: {lowers}, special: {specials}"
         );
-        (uppers, lowers, numbers, specials)
+        (uppers, lowers, decimal, specials)
     }
 
     fn gen_pass(config: PasswordRequirements) {
         let password = generate_password(config);
         println!("Generated password: {password}");
         assert_eq!(password.len(), config.length as usize);
-        let (uppers, lowers, numbers, specials) = count(&password);
-        assert_eq!(numbers, config.numbers as usize);
+        let (uppers, lowers, decimal, specials) = count(&password);
+        assert_eq!(decimal, config.decimal as usize);
         assert_eq!(specials, config.specials as usize);
-        let letters = (config.length - config.specials - config.numbers) as usize;
+        let letters = (config.length - config.specials - config.decimal) as usize;
         assert_eq!(letters, uppers + lowers);
         if config.first_is_letter {
             let first = password.chars().next().unwrap();
@@ -166,9 +166,9 @@ mod test {
     }
 
     #[test]
-    fn no_numbers() {
+    fn no_decimal() {
         let config = PasswordRequirements {
-            numbers: 0,
+            decimal: 0,
             ..Default::default()
         };
         gen_pass(config);

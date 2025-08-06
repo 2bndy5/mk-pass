@@ -59,7 +59,7 @@ def "nur test" [
     }
 
     # Now test the bindings
-    run-cmd uv run --directory bindings/python pytest -v
+    run-cmd uv run pytest -v
     run-cmd yarn test
 
     if $clean {
