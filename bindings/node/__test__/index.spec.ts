@@ -1,5 +1,5 @@
 import test from 'ava'
-import { main, generatePassword, validateRequirements, Samples } from '../index.js'
+import { main, generatePassword, validateRequirements, Samples } from '../index'
 
 test('main', async (t) => {
   t.is(main(['mk-pass']), undefined)

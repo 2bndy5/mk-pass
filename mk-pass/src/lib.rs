@@ -2,7 +2,9 @@
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/2bndy5/mk-pass/main/docs/docs/images/logo-square.png"
 )]
-#![doc(html_favicon_url = "https://github.com/2bndy5/mk-pass/raw/main/docs/docs/images/favicon.ico")]
+#![doc(
+    html_favicon_url = "https://github.com/2bndy5/mk-pass/raw/main/docs/docs/images/favicon.ico"
+)]
 use rand::prelude::*;
 mod helpers;
 use helpers::{CharKind, CountTypesUsed};

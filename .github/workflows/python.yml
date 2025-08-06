@@ -156,9 +156,9 @@ jobs:
       - name: Setup Rust
         run: rustup update --no-self-update
       - name: Install Workflow Dependencies
-        run: uv sync --package mk-pass --group test
+        run: uv sync --package mk-pass
       - name: Run pytest
-        run: uv run --directory bindings/python pytest -v --color yes
+        run: uv run pytest -v --color yes
 
   release:
     runs-on: ubuntu-latest

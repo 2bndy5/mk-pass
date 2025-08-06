@@ -50,7 +50,14 @@ jobs:
       - run: git config set user.name ${{ github.actor }}
       - name: Run tests
         run: >-
-          cargo llvm-cov --no-report nextest
+          cargo
+          llvm-cov
+          --no-report
+          --workspace
+          --exclude mk-pass-node
+          --exclude mk-pass-py
+          --exclude cli-gen
+          nextest
           --features bin
           --color always
           --profile ci
@@ -164,7 +171,7 @@ jobs:
       - name: Install Rust
         run: rustup update stable --no-self-update
       - name: Build API docs
-        run: cargo doc --no-deps --lib
+        run: cargo doc --no-deps --lib -p mk-pass
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:

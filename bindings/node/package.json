@@ -4,7 +4,6 @@
   "description": "Template project for writing node package with napi-rs",
   "main": "index.js",
   "repository": "git@github.com:napi-rs/package-template.git",
-  "readme": "../../README.md",
   "license": "MIT",
   "keywords": [
     "password",
@@ -37,6 +36,7 @@
       "aarch64-unknown-linux-musl",
       "aarch64-pc-windows-msvc",
       "armv7-linux-androideabi",
+      "universal-apple-darwin",
       "wasm32-wasip1-threads"
     ]
   },
@@ -55,6 +55,7 @@
     "format": "prettier . -w",
     "lint": "oxlint .",
     "prepublishOnly": "napi prepublish -t npm",
+    "universal": "napi universalize",
     "test": "ava",
     "version": "napi version"
   },

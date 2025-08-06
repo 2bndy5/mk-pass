@@ -2,7 +2,7 @@ name: Node.js
 
 env:
   DEBUG: napi:*
-  ARTIFACT_PATH: bindings/node/mk-pass.*.node
+  ARTIFACT_PATH: bindings/node/mk-pass.*
   MACOSX_DEPLOYMENT_TARGET: '10.13'
 
 on:
@@ -94,7 +94,7 @@ jobs:
             .cargo-cache
             target/
           key: ${{ matrix.settings.target }}-cargo-${{ matrix.settings.host }}
-      - uses: goto-bus-stop/setup-zig@v2
+      - uses: mlugg/setup-zig@v2
         if: ${{ contains(matrix.settings.target, 'musl') }}
         with:
           version: 0.14.1
@@ -119,15 +119,15 @@ jobs:
         with:
           name: bindings-${{ matrix.settings.target }}
           path: |
-            ${{ env.ARTIFACT_PATH }}.*.node
-            ${{ env.ARTIFACT_PATH }}.*.wasm
+            ${{ env.ARTIFACT_PATH }}.node
+            ${{ env.ARTIFACT_PATH }}.wasm
           if-no-files-found: error
-      - name: Upload generated index.* as artifact
+      - name: Upload generated index.*s as artifact
         if: matrix.settings.target == 'armv7-unknown-linux-gnueabihf'
         uses: actions/upload-artifact@v4
         with:
           name: generated-index
-          path: bindings/node/index.*
+          path: bindings/node/index.*s
           if-no-files-found: error
 
   build-freebsd:
@@ -149,7 +149,7 @@ jobs:
           environment_variables: DEBUG RUSTUP_IO_THREADS
           shell: bash
           run: |
-            sudo pkg install -y -f curl node libnghttp2 npm cmake
+            sudo pkg install -y -f curl node libnghttp2 npm yarn cmake
             sudo npm install -g yarn --ignore-scripts
             curl https://sh.rustup.rs -sSf --output rustup.sh
             sh rustup.sh -y --profile minimal --default-toolchain stable
@@ -174,7 +174,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-freebsd
-          path: ${{ env.ARTIFACT_PATH }}.*.node
+          path: ${{ env.ARTIFACT_PATH }}.node
           if-no-files-found: error
 
   universal-macOS:
@@ -207,7 +207,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bindings-universal-apple-darwin
-          path: ${{ env.ARTIFACT_PATH }}.*.node
+          path: ${{ env.ARTIFACT_PATH }}.node
           if-no-files-found: error
   test-macOS-windows-binding:
     name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
@@ -247,6 +247,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
+          path: bindings/node
+      - name: Download generated index artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-index
           path: bindings/node
       - name: List packages
         run: ls -R .
@@ -306,6 +311,11 @@ jobs:
         with:
           name: bindings-${{ matrix.target }}
           path: bindings/node
+      - name: Download generated index artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-index
+          path: bindings/node
       - name: List packages
         run: ls -R .
         shell: bash
@@ -347,6 +357,11 @@ jobs:
         with:
           name: bindings-wasm32-wasip1-threads
           path: bindings/node
+      - name: Download generated index artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-index
+          path: bindings/node
       - name: List packages
         run: ls -R .
         shell: bash
@@ -356,7 +371,6 @@ jobs:
           NAPI_RS_FORCE_WASI: 1
   publish:
     name: Publish
-    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -397,6 +411,7 @@ jobs:
         shell: bash
       - run: yarn format
       - name: Publish
+        if: startsWith(github.ref, 'refs/tags/')
         working-directory: bindings/node
         run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc

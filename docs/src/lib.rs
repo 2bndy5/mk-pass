@@ -41,7 +41,7 @@ fn generate_cli_doc(metadata: HashMap<String, HashMap<String, Py<PyAny>>>) -> Py
         );
         if let Some(map) = metadata.get(long_name) {
             if let Some(val) = map.get("minimum-version") {
-                out.push_str(format!("<!-- md:version {} -->\n", val).as_str());
+                out.push_str(format!("<!-- md:version {val} -->\n").as_str());
             }
             if map.contains_key("experimental") {
                 out.push_str("<!-- md:flag experimental -->\n");

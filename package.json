@@ -8,6 +8,7 @@
     "artifacts": "cd bindings/node && yarn artifacts",
     "build": "cd bindings/node && yarn build",
     "build:debug": "cd bindings/node && yarn build:debug",
+    "universal": "cd bindings/node && yarn universal",
     "lint": "cd bindings/node && yarn lint",
     "format": "cd bindings/node && yarn format",
     "test": "cd bindings/node && yarn test",
