@@ -2,10 +2,33 @@
 name = "mk-pass-ws"
 version = "0.0.0+private-virtual"
 requires-python = ">=3.9"
-dependencies = ["mk-pass"]
+dependencies = ["mk-pass", "cli-gen"]
+classifiers = ["Private :: Do Not Upload"]
 
 [tool.uv.sources]
 mk-pass = { workspace = true }
+cli-gen = { workspace = true }
 
 [tool.uv.workspace]
-members = ["bindings/python"]
+members = ["bindings/python", "docs"]
+
+[dependency-groups]
+docs = [
+    "markdown-gfm-admonition==0.1.1",
+    "mkdocs==1.6.1",
+    "mkdocs-gen-files==0.5.0",
+    "mkdocs-include-markdown-plugin==7.1.6",
+    "mkdocs-material==9.6.15",
+    "mkdocstrings>=0.30.0",
+    "mkdocstrings-python==1.16.12",
+    "pyyaml==6.0.2",
+]
+dev = [
+    "maturin==1.9.3",
+    "mypy==1.17.1",
+    "patchelf==0.17.2.2 ; sys_platform == 'linux'",
+    "pre-commit==4.2.0",
+    "pytest>=8.4.1",
+    "ruff>=0.12.7",
+    "types-pyyaml>=6.0.12.20250516",
+]

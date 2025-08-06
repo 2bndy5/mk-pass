@@ -1,0 +1,15 @@
+[build-system]
+requires = ["maturin>=1.4,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "cli-gen"
+description = "Generate mk-pass CLI doc from rust src."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+    { name = "Brendan Doherty", email = "2bndy5@gmail.com" },
+]
+classifiers = ["Private :: Do Not Upload"]
+dynamic = ["version"]

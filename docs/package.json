@@ -3,7 +3,7 @@
   "packageManager": "yarn@4.9.2",
   "private": true,
   "scripts": {
-    "docs": "typedoc ../bindings/node/index.d.ts --out ./src/node-api"
+    "docs": "typedoc ../bindings/node/index.d.ts --out ./docs/node-api"
   },
   "devDependencies": {
     "typedoc": "^0.28.9",

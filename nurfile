@@ -111,19 +111,44 @@ def "nur test lcov" [] {
 }
 
 
-# Generate Rust API docs
+# Generate all docs.
+#
+# Includes API docs for published packages (Rust, Python, Node.js).
+# Uses `uv`, `yarn` and `cargo` commands.
+# Assumes `yarn install` was already executed.
 def "nur docs" [
     --open (-o) # Open the built docs in your browser
+    --dirty (-d), # Do not rebuild local python dependencies
+    --build (-b), # Build docs instead of serving them from a local server (via `mkdocs`). Cannot be used with `--open` (`-o`)
 ] {
-    mut cargo_doc_args = [-p mk-pass --lib --no-deps --target-dir docs/src/rust-api]
-    if $open {
-        $cargo_doc_args = $cargo_doc_args | append '--open'
-    }
+    mut cargo_doc_args = [-p mk-pass --lib --no-deps --target-dir docs/docs/rust-api]
     run-cmd cargo doc ...$cargo_doc_args
 
+    if (not $dirty) {
+        yarn build:debug
+    }
     run-cmd yarn docs
-    if $open {
-        start docs/src/node-api/index.html
+
+    mut uv_sync_opts = [uv sync --all-groups]
+    if not $dirty {
+        $uv_sync_opts = (
+            $uv_sync_opts
+            | append [--reinstall-package cli-gen --reinstall-package mk-pass]
+        )
+    }
+    run-cmd  ...$uv_sync_opts
+
+    mut mkdocs_opts = [uv run mkdocs]
+    $mkdocs_opts = $mkdocs_opts | append (
+        if $build { 'build' } else { 'serve' }
+    )
+    $mkdocs_opts = $mkdocs_opts | append [--config-file docs/mkdocs.yml]
+    if $open and not $build {
+        $mkdocs_opts = $mkdocs_opts | append '--open'
+    }
+    run-cmd ...$mkdocs_opts
+    if $open and $build {
+        start docs/site/index.html
     }
 }
 

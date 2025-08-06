@@ -113,16 +113,17 @@ pub fn generate_password(config: PasswordRequirements) -> String {
     ::mk_pass::generate_password(::mk_pass::PasswordRequirements::from(&config))
 }
 
-/// A class of factory constructors to fetch the sample sets used
+/// A class of factory methods to instantiate a {@link Samples.set} used
 /// when generating a password.
 #[napi]
 pub struct Samples {
+    /// A set of characters.
     pub set: Vec<String>,
 }
 
 #[napi]
 impl Samples {
-    /// The list of possible special characters used when generating a password.
+    /// The possible special characters used when generating a password.
     #[napi(factory)]
     pub fn special_characters() -> Self {
         Self {
@@ -155,7 +156,7 @@ impl Samples {
         }
     }
 
-    /// The list of possible uppercase letters used when generating a password.
+    /// The possible uppercase (alphabetical) letters used when generating a password.
     #[napi(factory)]
     pub fn uppercase() -> Self {
         Self {

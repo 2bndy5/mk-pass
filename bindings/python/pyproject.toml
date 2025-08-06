@@ -39,17 +39,9 @@ tracker = "https://github.com/2bndy5/mk-pass/issues"
 
 [dependency-groups]
 dev = [
-    "maturin==1.9.3",
     "mypy==1.17.1",
-    "patchelf==0.17.2.2 ; sys_platform == 'linux'",
-    "pre-commit>=4.2.0",
-    "ruff>=0.12.7",
-]
-docs = [
-    "mkdocs>=1.6.1",
-]
-test = [
     "pytest>=8.4.1",
+    "ruff>=0.12.7",
 ]
 
 [tool.maturin]

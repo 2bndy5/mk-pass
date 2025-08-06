@@ -1,3 +1,7 @@
+[cli-doc]: https://2bndy5.github.io/mk-pass/cli/
+
+<!-- start -->
+
 # Comprehensive Password Generator
 
 This cross-platform compatible software will generate a password comprehensively.
@@ -20,7 +24,7 @@ when generating a password:
 
 ### What is a "special" character?
 
-This software uses the following set characters to generate special characters in a password:
+This software uses the following set of characters to generate special characters in a password:
 
 > ``- . / \ : ` + & , @ $ ! _ # % ~``
 
@@ -34,7 +38,10 @@ However, these are special characters that are widely accepted by most sign-on s
 
 While this software can be used as a library, a binary executable is also provided for each release.
 
-The following will print the available options and their default values.
+A document generated from the rust sources details the CLI options.
+See the hosted [CLI doc][cli-doc].
+
+The following command will print the available options and their default values.
 
 ```shell
 mk-pass -h

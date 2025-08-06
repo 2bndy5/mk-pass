@@ -1,4 +1,5 @@
 
 # generated docs
-src/node-api/**
-src/rust-api/**
+docs/node-api/**
+docs/rust-api/**
+site/

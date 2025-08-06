@@ -32,7 +32,6 @@ pub struct PasswordRequirements {
             help = "Do not restrict the first character to only letters.",
             long_help = "Do not restrict the first character to only letters.\
             \n\nBy default, the first character is always a letter.",
-            default_value = "true",
             action = clap::ArgAction::SetFalse
         )
     )]

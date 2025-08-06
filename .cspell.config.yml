@@ -10,22 +10,28 @@ words:
   - capfd
   - cdylib
   - clippy
+  - crossrefs
   - Doherty
   - dtolnay
   - eabi
   - emnapi
   - endfor
   - endmacro
+  - fontawesome
   - getattr
   - gnueabi
   - gnueabihf
+  - Heroicons
   - hustcer
+  - inlinehilite
   - isnan
   - libc
   - libnghttp
+  - linenums
   - manylinux
   - maturin
   - mkdocs
+  - mkdocstrings
   - msvc
   - multiarch
   - musleabihf
@@ -44,23 +50,29 @@ words:
   - patchelf
   - pyclass
   - pyfunction
+  - pymdownx
   - pymethods
   - pymodule
   - pypa
   - pypi
   - pyproject
   - pytest
+  - pyyaml
   - repr
+  - reshim
   - riscv
   - rustc
   - rustflags
   - rustup
   - sccache
   - sdist
+  - setattr
   - staticlib
+  - superfences
   - taiki
   - timeit
   - topo
+  - twemoji
   - tybys
   - venv
   - WASI
@@ -75,3 +87,4 @@ ignorePaths:
   - target/**
   - "**/.gitignore"
   - .yarn/releases/*
+  - docs/docs/images/Key--Streamline-Heroicons.svg
