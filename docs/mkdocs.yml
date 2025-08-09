@@ -10,6 +10,7 @@ nav:
   - Python API: python.md
   - Node.js API: node-api/index.html
   - Rust API: rust-api/doc/mk_pass/index.html
+  - C++ API: cpp-api/html/index.html
   - changelog.md
   - contributing.md
   - other-licenses.md

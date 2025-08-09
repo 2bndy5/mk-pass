@@ -1,0 +1,90 @@
+# This is a template cbindgen.toml file with all of the default values.
+# Some values are commented out because their absence is the real default.
+#
+# See https://github.com/mozilla/cbindgen/blob/master/docs.md#cbindgentoml
+# for detailed documentation of every option here.
+
+language = "C++"
+
+
+############## Options for Wrapping the Contents of the Header #################
+
+# header = "/* Text to put at the beginning of the generated file. Probably a license. */"
+# trailer = "/* Text to put at the end of the generated file */"
+include_guard = "MK_PASS_H_"
+include_version = true
+namespace = "mk_pass"
+namespaces = []
+using_namespaces = []
+includes = []
+sys_includes = ["stdint.h"]
+no_includes = true
+cpp_compat = true
+after_includes = ""
+
+
+############################ Code Style Options ################################
+
+braces = "SameLine"
+line_length = 100
+tab_width = 4
+documentation = true
+documentation_style = "auto"
+documentation_length = "full"
+line_endings = "LF" # also "CR", "CRLF", "Native"
+
+
+############################# Code Generation Options ##########################
+
+style = "both"
+sort_by = "Name" # default for `fn.sort_by` and `const.sort_by`
+
+[export]
+include = []
+exclude = []
+item_types = []
+renaming_overrides_prefixing = false
+
+[export.rename]
+
+[export.body]
+
+[export.mangle]
+
+[fn]
+rename_args = "CamelCase"
+# must_use = "MUST_USE_FUNC"
+# deprecated = "DEPRECATED_FUNC"
+# deprecated_with_note = "DEPRECATED_FUNC_WITH_NOTE"
+# no_return = "NO_RETURN"
+# prefix = "START_FUNC"
+# postfix = "END_FUNC"
+args = "auto"
+sort_by = "Name"
+
+[struct]
+rename_fields = "CamelCase"
+rename_associated_constant = "None"
+derive_constructor = false
+derive_eq = true
+derive_neq = true
+
+[const]
+allow_static_const = true
+sort_by = "Name"
+
+
+############## Options for How Your Rust library Should Be Parsed ##############
+
+[parse]
+parse_deps = false
+# include = []
+exclude = []
+clean = false
+extra_bindings = []
+
+[parse.expand]
+crates = []
+all_features = false
+default_features = true
+features = []

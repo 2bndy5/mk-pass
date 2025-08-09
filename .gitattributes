@@ -4,6 +4,7 @@
 # Explicitly declare text files you want to always be normalized and converted
 # to native line endings on checkout.
 *.py text eol=lf
+*.pyi text eol=lf
 *.css text eol=lf
 *.md text eol=lf
 *.rs text eol=lf
@@ -22,9 +23,11 @@
 .gitattributes text eol=lf
 .gitignore text eol=lf
 *.txt text eol=lf
+*.svg text eol=lf
 *.json text eol=lf
 *.clang-tidy text eol=lf
 *.clang-format text eol=lf
 *.nu text eol=lf
 nurfile text eol=lf
 LICENSE text eol=lf
+Doxyfile test eol=lf

@@ -8,14 +8,18 @@ words:
   - binstall
   - bndy
   - capfd
+  - cbindgen
   - cdylib
   - clippy
   - crossrefs
+  - ctest
   - Doherty
+  - Doxyfile
   - dtolnay
   - eabi
   - emnapi
   - endfor
+  - endforeach
   - endmacro
   - fontawesome
   - getattr
@@ -66,9 +70,12 @@ words:
   - rustflags
   - rustup
   - sccache
+  - scrollbars
   - sdist
   - setattr
   - staticlib
+  - stdint
+  - STREQUAL
   - superfences
   - taiki
   - timeit
@@ -78,6 +85,7 @@ words:
   - venv
   - WASI
   - wasip
+  - Werror
   - yarnrc
   - zigbuild
 ignorePaths:
@@ -89,3 +97,4 @@ ignorePaths:
   - "**/.gitignore"
   - .yarn/releases/*
   - docs/docs/images/Key--Streamline-Heroicons.svg
+  - bindings/cpp/Doxyfile

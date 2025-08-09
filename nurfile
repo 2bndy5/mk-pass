@@ -37,31 +37,81 @@ def --wrapped run-cmd [...cmd: string] {
 }
 
 
-# Run the test suite
+# Test Python binding
+#
+# Uses `uv` to build/install the bindings and run the test script.
+def "nur test py" [
+    --clean (-c) # Purge previous test artifacts. Use to refresh coverage data.
+] {
+    # ensure bindings are installed
+    if ($clean) {
+        nur install --py
+    } else {
+        nur install --dirty --py
+    }
+
+    run-cmd uv run pytest -v
+}
+
+
+# Test Node.js binding
+#
+# Uses `yarn` to build/install the bindings and run the test script.
+def "nur test js" [
+    --clean (-c) # Purge previous test artifacts. Use to refresh coverage data.
+] {
+    # ensure bindings are installed
+    if ($clean) {
+        nur install --js
+    } else {
+        nur install --dirty --js
+    }
+
+    run-cmd yarn test
+}
+
+
+# Test C++ binding.
+#
+# Uses cmake and ctest to build/run unit tests
+# If `--clean` is specified, then `cbindgen` is invoked to
+# regenerate the bindings/cpp/include/mk_pass.hpp file.
+def "nur test cpp" [
+    --clean (-c), # Purge previous build artifacts
+] {
+    let is_dirty = "bindings/cpp/build" | path exists
+    if $clean or (not $is_dirty) {
+        if $is_dirty {
+            print "Purging previous build artifacts"
+            rm -r bindings/cpp/build/
+        }
+        cd bindings/cpp
+        run-cmd ...[
+            cbindgen
+            --config
+            cbindgen.toml
+            --crate
+            mk-pass-cpp
+            --output
+            include/mk_pass.hpp
+            -v
+        ]
+        cd ../..
+        run-cmd cmake -B bindings/cpp/build -S bindings/cpp -D MK_PASS_TESTS=ON
+    }
+    run-cmd cmake --build bindings/cpp/build
+    run-cmd ctest --test-dir bindings/cpp/build/tests
+}
+
+# Run the Rust tests.
 #
 # Requires the following installed:
 # - cargo-llvm-cov
 # - cargo-nextest
-#
-# This also tests the FFI bindings, so
-# it invokes `uv` and `yarn` to ensure
-# the bindings (and their dependencies) are installed .
-#
 def "nur test" [
     --clean (-c) # Purge previous test artifacts. Use to refresh coverage data.
-    --profile (-p): string = 'default' # The profile defined in .config/nextest.toml
+    --profile (-p): string = 'default' # The profile defined in .config/nextest.toml.
 ] {
-    # ensure bindings are installed
-    if ($clean) {
-        nur install
-    } else {
-        nur install --dirty
-    }
-
-    # Now test the bindings
-    run-cmd uv run pytest -v
-    run-cmd yarn test
-
     if $clean {
         run-cmd cargo llvm-cov clean
     }
@@ -72,6 +122,7 @@ def "nur test" [
         --workspace
         --exclude mk-pass-node
         --exclude mk-pass-py
+        --exclude mk-pass-cpp
         --exclude cli-gen
         nextest
         --features bin
@@ -81,8 +132,12 @@ def "nur test" [
     run-cmd ...$cmd
 }
 
+alias "nur test rs" = nur test
 
-# Generate detailed coverage report
+# Generate detailed coverage report.
+#
+# Applies to only rust sources.
+# Assumes `nur test` was executed beforehand
 #
 # Pass "--open" to load the built report in your browser
 # Requires cargo-llvm-cov installed.
@@ -93,20 +148,32 @@ def --wrapped "nur test llvm-cov" [
 }
 
 
-# Install FFI bindings
+# Install Node.js and/or python bindings.
 #
 # Uses `yarn` and `uv` to build development (debug profile) versions
 # of the respective node.js and python bindings.
+#
+# If neither `--js` and `--py` are specified,
+# then both node.js and python bindings are built/installed.
 def "nur install" [
     --dirty (-d), # skip building binding if already built.
+    --js, # only build/install node.js bindings.
+    --py, # only build/install python bindings.
 ] {
-    let built_node = "bindings/node/index.d.ts" | path exists
-    if (not $dirty) or (not $built_node) {
-        run-cmd yarn build:debug
+    let all = (not $js) and (not $py)
+
+    if $all or $js {
+        let built_node = "bindings/node/index.d.ts" | path exists
+        if (not $dirty) or (not $built_node) {
+            run-cmd yarn build:debug
+        }
     }
-    let built_python = ^uv pip show mk-pass | complete | get exit_code | ($in == 0)
-    if (not $dirty) or (not $built_python) {
-        run-cmd uv sync --package mk-pass --all-groups --reinstall-package mk-pass
+
+    if $all or $js {
+        let built_python = ^uv pip show mk-pass | complete | get exit_code | ($in == 0)
+        if (not $dirty) or (not $built_python) {
+            run-cmd uv sync --package mk-pass --all-groups --reinstall-package mk-pass
+        }
     }
 }
 
@@ -125,6 +192,7 @@ def "nur test lcov" [] {
 # Includes API docs for published packages (Rust, Python, Node.js).
 # Uses `uv`, `yarn` and `cargo` commands.
 # Assumes `yarn install` was already executed.
+# Requires `cbindgen` and `doxygen` installed for the C binding API docs.
 def "nur docs" [
     --open (-o) # Open the built docs in your browser
     --dirty (-d), # Do not rebuild local python dependencies
@@ -137,6 +205,11 @@ def "nur docs" [
         yarn build:debug
     }
     run-cmd yarn docs
+
+    cd bindings/cpp/
+    run-cmd cbindgen --config cbindgen.toml --output include/mk_pass.hpp -v
+    run-cmd doxygen
+    cd ../../
 
     mut uv_sync_opts = [uv sync --all-groups]
     if not $dirty {
@@ -166,9 +239,20 @@ def "nur docs" [
 def "nur lint" [] {
     run-cmd yarn lint
     run-cmd yarn format
+
+    let cpp_files = glob 'bindings/cpp/{src,tests,include}/*.{cpp,hpp}'
+    print "\nFormatting the following files:"
+    print $cpp_files
+    let elapsed = timeit {|| $cpp_files | par-each {|f| clang-format -i --style file $f}}
+    print $"(ansi purple)clang-formatted ($cpp_files | length) files in ($elapsed)(ansi reset)"
+
+    for f in $cpp_files {
+        print $f
+    }
     run-cmd uv run --directory bindings/python ruff check
     run-cmd uv run --directory bindings/python ruff format
     run-cmd uv run --directory bindings/python mypy
+
     run-cmd ...(
         [cargo clippy --fix --allow-dirty --allow-staged --all-features]
     )

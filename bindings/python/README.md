@@ -6,15 +6,18 @@
 
 This cross-platform compatible software will generate a password comprehensively.
 
-[![rust-ci-badge]][rust-ci-link]
-[![python-ci-badge]][python-ci-link]
-[![node-ci-badge]][node-ci-link]
-[![codecov-badge]][codecov-link]
-[![rtd-badge]][rtd-link]
+[![rust-ci-badge][rust-ci-badge]][rust-ci-link]
+[![cpp-ci-badge][cpp-ci-badge]][cpp-ci-link]
+[![python-ci-badge][python-ci-badge]][python-ci-link]
+[![node-ci-badge][node-ci-badge]][node-ci-link]
+[![codecov-badge][codecov-badge]][codecov-link]
+[![rtd-badge][rtd-badge]][rtd-link]
 [![CHANGELOG][changelog-badge]][changelog-link]
 
 [rust-ci-badge]: https://github.com/2bndy5/mk-pass/actions/workflows/rust.yml/badge.svg
 [rust-ci-link]: https://github.com/2bndy5/mk-pass/actions/workflows/rust.yml
+[cpp-ci-badge]: https://github.com/2bndy5/mk-pass/actions/workflows/cpp.yml/badge.svg
+[cpp-ci-link]: https://github.com/2bndy5/mk-pass/actions/workflows/cpp.yml
 [python-ci-badge]: https://github.com/2bndy5/mk-pass/actions/workflows/python.yml/badge.svg
 [python-ci-link]: https://github.com/2bndy5/mk-pass/actions/workflows/python.yml
 [node-ci-badge]: https://github.com/2bndy5/mk-pass/actions/workflows/node.yml/badge.svg

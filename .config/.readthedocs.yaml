@@ -23,6 +23,16 @@ build:
       - corepack enable
       - corepack prepare --activate yarn@4.9.2
       - asdf reshim nodejs
+      # Install doxygen from source distributions (conda forge does not keep up-to-date doxygen releases)
+      - >
+        DOXYGEN_VERSION="1.14.0" &&
+        mkdir -p ${HOME}/.doxygen && cd ${HOME}/.doxygen &&
+        echo $(pwd) &&
+        echo "https://sourceforge.net/projects/doxygen/files/rel-${DOXYGEN_VERSION}/doxygen-${DOXYGEN_VERSION}.linux.bin.tar.gz" &&
+        curl -L https://sourceforge.net/projects/doxygen/files/rel-${DOXYGEN_VERSION}/doxygen-${DOXYGEN_VERSION}.linux.bin.tar.gz > doxygen.tar.gz &&
+        gunzip doxygen.tar.gz &&
+        tar xf doxygen.tar &&
+        mv doxygen-${DOXYGEN_VERSION}/bin/doxygen ${HOME}/.local/bin/
     pre_build:
       - yarn install
       - yarn build:debug
@@ -30,6 +40,9 @@ build:
       html:
         - cargo doc -p mk-pass --lib --no-deps --target-dir docs/docs/rust-api
         - yarn docs
+        - >-
+          cd bindings/cpp &&
+          ${HOME}/.local/bin/doxygen
         - >-
           ${HOME}/.local/bin/uv run
           mkdocs build --config-file docs/mkdocs.yml

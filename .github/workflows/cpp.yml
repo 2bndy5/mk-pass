@@ -1,0 +1,74 @@
+name: C++
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'bindings/cpp/**'
+      - 'Cargo.{toml,lock}'
+      - 'mk-pass/**/*.rs'
+      - .github/workflows/cpp.yml
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'bindings/cpp/**'
+      - 'Cargo.{toml,lock}'
+      - 'mk-pass/**/*.rs'
+      - .github/workflows/cpp.yml
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure build
+        run: cmake -B bindings/cpp/build -S bindings/cpp -D MK_PASS_TESTS=ON
+      - name: Build
+        run: cmake --build bindings/cpp/build
+      - name: Test
+        run: ctest --test-dir bindings/cpp/build/tests
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install clang-format
+        run: sudo apt-get install clang-format-14
+      - name: Setup nushell
+        uses: hustcer/setup-nu@v3
+        with:
+          version: "*"
+      - name: Format
+        shell: nu {0}
+        run: |-
+          let files = glob 'bindings/cpp/*/*.{cpp,hpp}'
+          print "Formatting the following files:"
+          print $files
+          for f in $files {
+              clang-format-14 --dry-run -Werror --style file $f
+          }
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Doxygen
+        env:
+          DOXYGEN_VERSION: '1.14.0'
+        run: |-
+          curl -L https://sourceforge.net/projects/doxygen/files/rel-${DOXYGEN_VERSION}/doxygen-${DOXYGEN_VERSION}.linux.bin.tar.gz > ${{ runner.temp }}/doxygen.tar.gz
+          cd ${{ runner.temp }}
+          gunzip doxygen.tar.gz
+          tar xf doxygen.tar
+          cd doxygen-${DOXYGEN_VERSION}
+          sudo make install
+      - name: Build
+        run: doxygen
+        working-directory: bindings/cpp
+      - name: Upload doxygen build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: docs/docs/cpp-api/html
+          name: cpp-api_docs
