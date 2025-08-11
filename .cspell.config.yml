@@ -67,6 +67,7 @@ words:
   - reshim
   - riscv
   - rustc
+  - rustdoc
   - rustflags
   - rustup
   - sccache
@@ -78,6 +79,7 @@ words:
   - STREQUAL
   - superfences
   - taiki
+  - tasklist
   - timeit
   - topo
   - twemoji

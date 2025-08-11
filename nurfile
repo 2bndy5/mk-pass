@@ -37,7 +37,7 @@ def --wrapped run-cmd [...cmd: string] {
 }
 
 
-# Test Python binding
+# Test Python binding.
 #
 # Uses `uv` to build/install the bindings and run the test script.
 def "nur test py" [
@@ -54,9 +54,10 @@ def "nur test py" [
 }
 
 
-# Test Node.js binding
+# Test Node.js binding.
 #
 # Uses `yarn` to build/install the bindings and run the test script.
+# Assumes `yarn install` was already executed.
 def "nur test js" [
     --clean (-c) # Purge previous test artifacts. Use to refresh coverage data.
 ] {
@@ -73,7 +74,7 @@ def "nur test js" [
 
 # Test C++ binding.
 #
-# Uses cmake and ctest to build/run unit tests
+# Uses `cmake` and `ctest` to build/run unit tests
 # If `--clean` is specified, then `cbindgen` is invoked to
 # regenerate the bindings/cpp/include/mk_pass.hpp file.
 def "nur test cpp" [
@@ -105,7 +106,7 @@ def "nur test cpp" [
 
 # Run the Rust tests.
 #
-# Requires the following installed:
+# Requires the following tools installed:
 # - cargo-llvm-cov
 # - cargo-nextest
 def "nur test" [
@@ -132,7 +133,6 @@ def "nur test" [
     run-cmd ...$cmd
 }
 
-alias "nur test rs" = nur test
 
 # Generate detailed coverage report.
 #
@@ -145,6 +145,15 @@ def --wrapped "nur test llvm-cov" [
     ...args: string # Additional arguments for `llvm-cov report --html`.
 ] {
     run-cmd cargo llvm-cov report --html ...$args
+}
+
+
+# Generate lcov.info.
+#
+# Requires cargo-llvm-cov installed.
+# Useful for codecov uploads or VSCode extensions like "Coverage Gutters".
+def "nur test lcov" [] {
+    run-cmd cargo llvm-cov report --lcov --output-path lcov.info
 }
 
 
@@ -175,15 +184,6 @@ def "nur install" [
             run-cmd uv sync --package mk-pass --all-groups --reinstall-package mk-pass
         }
     }
-}
-
-alias "nur i" = nur install
-
-# Generate lcov.info
-#
-# Useful for codecov uploads or VSCode extensions like "Coverage Gutters".
-def "nur test lcov" [] {
-    run-cmd cargo llvm-cov report --lcov --output-path lcov.info
 }
 
 
@@ -235,7 +235,13 @@ def "nur docs" [
 }
 
 
-# Run clippy and rustfmt (on packages only)
+# Run clippy and rustfmt (on packages only).
+#
+# Requires the following installed:
+# - `yarn` (assumes `yarn install` was invoked)
+# - `uv`
+# - `clang-format` (v14 is expected)
+# - `clippy` and `rustfmt` (comes with Rust by default)
 def "nur lint" [] {
     run-cmd yarn lint
     run-cmd yarn format

@@ -11,7 +11,7 @@ nav:
   - Node.js API: node-api/index.html
   - Rust API: rust-api/doc/mk_pass/index.html
   - C++ API: cpp-api/html/index.html
-  - changelog.md
+  - CHANGELOG.md
   - contributing.md
   - other-licenses.md
 exclude_docs: |
@@ -105,11 +105,13 @@ plugins:
 
 markdown_extensions:
   - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.tabbed:
       alternate_style: true
-  # - pymdownx.emoji:
-  #     emoji_index: !!python/name:material.extensions.emoji.twemoji
-  #     emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - toc:
       permalink: true
   - pymdownx.highlight:
