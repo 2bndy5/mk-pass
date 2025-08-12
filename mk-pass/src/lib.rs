@@ -36,6 +36,10 @@ pub fn generate_password(config: PasswordRequirements) -> String {
     let max_letters = len as u16 - config.decimal - config.specials;
     let max_lowercase = max_letters / 2;
     let max_uppercase = max_letters - max_lowercase;
+    #[cfg(test)]
+    {
+        println!("max_lowers: {max_lowercase}, max_uppers: {max_uppercase}");
+    }
 
     let mut pass_chars = vec!['\n'; len];
 
@@ -45,8 +49,18 @@ pub fn generate_password(config: PasswordRequirements) -> String {
         let sample_set = sample_kind.into_sample();
         pass_chars[0] = sample_set[rng.random_range(0..LOWERCASE.len())];
         match sample_kind {
-            CharKind::Lowercase => used_types.lowercase += 1,
-            _ => used_types.uppercase += 1,
+            CharKind::Lowercase => {
+                used_types.lowercase += 1;
+                if used_types.lowercase == max_lowercase {
+                    available_types = CharKind::pop_kind(available_types, &sample_kind);
+                }
+            }
+            _ => {
+                used_types.uppercase += 1;
+                if used_types.uppercase == max_uppercase {
+                    available_types = CharKind::pop_kind(available_types, &sample_kind);
+                }
+            }
         }
         1
     } else {
@@ -61,12 +75,20 @@ pub fn generate_password(config: PasswordRequirements) -> String {
         match kind {
             CharKind::Lowercase => {
                 used_types.lowercase += 1;
+                #[cfg(test)]
+                {
+                    println!("used lowers: {}", used_types.lowercase);
+                }
                 if used_types.lowercase == max_lowercase {
                     available_types = CharKind::pop_kind(available_types, &kind);
                 }
             }
             CharKind::Uppercase => {
                 used_types.uppercase += 1;
+                #[cfg(test)]
+                {
+                    println!("used uppers: {}", used_types.uppercase);
+                }
                 if used_types.uppercase == max_uppercase {
                     available_types = CharKind::pop_kind(available_types, &kind);
                 }
@@ -88,8 +110,10 @@ pub fn generate_password(config: PasswordRequirements) -> String {
         // now generate character from selected sample set
         let sample = kind.into_sample();
         let mut rand_index = rng.random_range(0..sample.len());
-        while pass_chars.contains(&sample[rand_index]) {
-            rand_index = rng.random_range(0..sample.len());
+        if !config.allow_repeats {
+            while pass_chars.contains(&sample[rand_index]) {
+                rand_index = rng.random_range(0..sample.len());
+            }
         }
 
         // now pick an index in the password that hasn't been used
@@ -109,9 +133,10 @@ mod test {
     use super::{PasswordRequirements, generate_password};
     use crate::helpers::{DECIMAL, LOWERCASE, SPECIAL_CHARACTERS, UPPERCASE};
 
-    fn count(output: &str) -> (usize, usize, usize, usize) {
+    fn count(output: &str) -> (usize, usize, usize, usize, usize) {
         let (mut uppers, mut lowers, mut decimal, mut specials) = (0, 0, 0, 0);
-        for ch in output.chars() {
+        let mut repeats = vec![];
+        for (i, ch) in output.char_indices() {
             if LOWERCASE.contains(&ch) {
                 lowers += 1;
             } else if UPPERCASE.contains(&ch) {
@@ -121,22 +146,27 @@ mod test {
             } else if SPECIAL_CHARACTERS.contains(&ch) {
                 specials += 1;
             }
+            if output[0..i].contains(ch) && !repeats.contains(&ch) {
+                repeats.push(ch);
+            }
         }
+        let repeats = repeats.len();
         println!(
-            "decimal: {decimal}, uppercase: {uppers}, lowercase: {lowers}, special: {specials}"
+            "decimal: {decimal}, uppercase: {uppers}, lowercase: {lowers}, special: {specials}, repeats: {repeats}"
         );
-        (uppers, lowers, decimal, specials)
+        (uppers, lowers, decimal, specials, repeats)
     }
 
     fn gen_pass(config: PasswordRequirements) {
         let password = generate_password(config);
         println!("Generated password: {password}");
         assert_eq!(password.len(), config.length as usize);
-        let (uppers, lowers, decimal, specials) = count(&password);
+        let (uppers, lowers, decimal, specials, repeats) = count(&password);
         assert_eq!(decimal, config.decimal as usize);
         assert_eq!(specials, config.specials as usize);
         let letters = (config.length - config.specials - config.decimal) as usize;
         assert_eq!(letters, uppers + lowers);
+        assert_eq!(repeats > 0, config.allow_repeats);
         if config.first_is_letter {
             let first = password.chars().next().unwrap();
             assert!(LOWERCASE.contains(&first) || UPPERCASE.contains(&first));
@@ -178,5 +208,50 @@ mod test {
             ..Default::default()
         };
         gen_pass(config);
+    }
+
+    #[test]
+    fn allow_repeats() {
+        let config = PasswordRequirements {
+            allow_repeats: true,
+            decimal: 18,
+            length: 20,
+            specials: 0,
+            ..Default::default()
+        };
+        gen_pass(config);
+    }
+
+    /// This is a hacky way to ensure complete coverage about the first character kind.
+    ///
+    /// It basically keeps generating a password until the first random letter is either
+    /// [`UPPERCASE`] or [`LOWERCASE`] as specified by the `lower` parameter.
+    ///
+    /// Theoretically, this could cause an infinite loop or just run a long time because
+    /// we are relying on randomness. However, the condition being tested means the
+    /// probability of the randomness is 50:50.
+    fn till_first_is(lower: bool) {
+        let config = PasswordRequirements {
+            specials: 8,
+            decimal: 0,
+            length: 10,
+            ..Default::default()
+        };
+        let sample_set: &[char] = if lower { &LOWERCASE } else { &UPPERCASE };
+
+        let mut password = generate_password(config);
+        while !sample_set.contains(&password.chars().next().unwrap()) {
+            password = generate_password(config);
+        }
+    }
+
+    #[test]
+    fn gen_first_lower() {
+        till_first_is(true);
+    }
+
+    #[test]
+    fn gen_first_upper() {
+        till_first_is(false);
     }
 }

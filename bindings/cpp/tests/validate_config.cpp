@@ -13,16 +13,18 @@ void printConfig(mk_pass::PasswordRequirements &config) {
 
 int main() {
     mk_pass::PasswordRequirements config = {
-        16,   // length
-        15,   // decimal
-        15,   // specials
-        true, // firstIsLetter
+        16,    // length
+        15,    // decimal
+        15,    // specials
+        true,  // firstIsLetter
+        false, // allowRepeats
     };
     mk_pass::PasswordRequirements expected = {
-        16,   // length
-        13,   // decimal
-        1,    // specials
-        true, // firstIsLetter
+        16,    // length
+        13,    // decimal
+        1,     // specials
+        true,  // firstIsLetter
+        false, // allowRepeats
     };
     mk_pass::PasswordRequirements validated =
         mk_pass::validateRequirements(&config);

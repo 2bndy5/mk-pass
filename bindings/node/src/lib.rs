@@ -22,8 +22,11 @@ pub struct PasswordRequirements {
     /// How many special characters should the password contain?
     pub specials: Option<i32>,
 
-    /// Ensure the first character is a letter?
+    /// Should the first character always be a letter?
     pub first_is_letter: Option<bool>,
+
+    /// Allow characters to be used more than once?
+    pub allow_repeats: Option<bool>,
 }
 
 impl From<&PasswordRequirements> for ::mk_pass::PasswordRequirements {
@@ -33,6 +36,7 @@ impl From<&PasswordRequirements> for ::mk_pass::PasswordRequirements {
             decimal: value.decimal.unwrap_or(1) as u16,
             specials: value.specials.unwrap_or(1) as u16,
             first_is_letter: value.first_is_letter.unwrap_or(true),
+            allow_repeats: value.allow_repeats.unwrap_or(false),
         }
     }
 }
@@ -44,6 +48,7 @@ impl From<::mk_pass::PasswordRequirements> for PasswordRequirements {
             decimal: Some(value.decimal as i32),
             specials: Some(value.specials as i32),
             first_is_letter: Some(value.first_is_letter),
+            allow_repeats: Some(value.allow_repeats),
         }
     }
 }
@@ -63,6 +68,7 @@ impl From<::mk_pass::PasswordRequirements> for PasswordRequirements {
 ///    - 62 if only letters and decimal integers are used
 ///    - 68 if only letters and special characters are used
 ///    - 78 if letters, decimal integers, and special characters are used
+///    - 65535 if repeated characters are allowed
 /// 3. `specials` character count does not overrule the required number of
 ///
 ///    - letters (2; 1 uppercase and 1 lowercase)

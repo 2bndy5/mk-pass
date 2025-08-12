@@ -178,7 +178,7 @@ def "nur install" [
         }
     }
 
-    if $all or $js {
+    if $all or $py {
         let built_python = ^uv pip show mk-pass | complete | get exit_code | ($in == 0)
         if (not $dirty) or (not $built_python) {
             run-cmd uv sync --package mk-pass --all-groups --reinstall-package mk-pass

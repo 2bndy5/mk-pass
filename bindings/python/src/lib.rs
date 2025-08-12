@@ -37,25 +37,30 @@ pub mod mk_pass {
 
         /// Should the first character always be a letter?
         pub first_is_letter: bool,
+
+        /// Allow characters to be used more than once?
+        pub allow_repeats: bool,
     }
 
     #[pymethods]
     impl PasswordRequirements {
         #[new]
         #[pyo3(
-        signature = (length = 16, decimal=1, specials=1, first_is_letter = true)
+        signature = (length = 16, decimal=1, specials=1, first_is_letter = true, allow_repeats = false)
     )]
         pub fn new(
             length: Option<i32>,
             decimal: Option<i32>,
             specials: Option<i32>,
             first_is_letter: Option<bool>,
+            allow_repeats: Option<bool>,
         ) -> Self {
             Self {
                 length: length.unwrap_or(16) as u16,
                 decimal: decimal.unwrap_or(1) as u16,
                 specials: specials.unwrap_or(1) as u16,
-                first_is_letter: first_is_letter.is_none_or(|v| v),
+                first_is_letter: first_is_letter.unwrap_or(true),
+                allow_repeats: allow_repeats.unwrap_or_default(),
             }
         }
 
@@ -76,6 +81,7 @@ pub mod mk_pass {
         ///     - 62 if only letters and decimal integers are used
         ///     - 68 if only letters and special characters are used
         ///     - 78 if letters, decimal integers, and special characters are used
+        ///     - 65535 if repeated characters are allowed
         /// 3. `specials` character count does not overrule the required number of
         ///     - letters (2; 1 uppercase and 1 lowercase)
         ///     - decimal integers (if `decimal` is specified as non-zero value)
@@ -110,6 +116,7 @@ pub mod mk_pass {
                 decimal: value.decimal,
                 specials: value.specials,
                 first_is_letter: value.first_is_letter,
+                allow_repeats: value.allow_repeats,
             }
         }
     }
@@ -121,6 +128,7 @@ pub mod mk_pass {
                 decimal: value.decimal,
                 specials: value.specials,
                 first_is_letter: value.first_is_letter,
+                allow_repeats: value.allow_repeats,
             }
         }
     }

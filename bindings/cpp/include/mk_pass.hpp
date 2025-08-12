@@ -17,16 +17,20 @@ struct PasswordRequirements {
     uint16_t specials;
     /// Should the first character always be a letter?
     bool firstIsLetter;
+    /// Allow characters to be used more than once?
+    bool allowRepeats;
 
     bool operator==(const PasswordRequirements &other) const {
         return length == other.length && decimal == other.decimal
                && specials == other.specials
-               && firstIsLetter == other.firstIsLetter;
+               && firstIsLetter == other.firstIsLetter
+               && allowRepeats == other.allowRepeats;
     }
     bool operator!=(const PasswordRequirements &other) const {
         return length != other.length || decimal != other.decimal
                || specials != other.specials
-               || firstIsLetter != other.firstIsLetter;
+               || firstIsLetter != other.firstIsLetter
+               || allowRepeats != other.allowRepeats;
     }
 };
 
@@ -55,6 +59,7 @@ void runMain();
 ///    - 62 if only letters and decimal integers are used
 ///    - 68 if only letters and special characters are used
 ///    - 78 if letters, decimal integers, and special characters are used
+///    - 65535 if repeated characters are allowed
 /// 3. `specials` character count does not overrule the required number of
 ///
 ///    - letters (2; 1 uppercase and 1 lowercase)
@@ -72,19 +77,21 @@ void runMain();
 /// For example:
 ///
 /// ```c
-/// include "mk_pass.h";
+/// #include <mk_pass.hpp>
 ///
-/// PasswordRequirements req = PasswordRequirements {
-///     length: 16,
-///     specials: 16,
-///     decimal: 16,
-///     first_is_letter: true,
+/// PasswordRequirements req = {
+///     16,    // length
+///     16,    // specials
+///     16,    // decimal
+///     true,  // firstIsLetter
+///     false, // allowRepeats
 /// };
-/// PasswordRequirements expected = PasswordRequirements {
-///     length: 16,
-///     specials: 1,
-///     decimal: 13,
-///     first_is_letter: true,
+/// PasswordRequirements expected = {
+///     16,    // length
+///     1,     // specials
+///     13,    // decimal
+///     true,  // firstIsLetter
+///     false, // allowRepeats
 /// };
 /// assert(validateRequirements(&req) == expected);
 /// ```

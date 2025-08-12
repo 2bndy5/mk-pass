@@ -11,23 +11,32 @@ from mk_pass import (
 )
 
 
-def assert_password_satisfies_default(password: str):
+def assert_password_is_expected(password: str, config: PasswordRequirements):
     first = password[0]
     assert first in LOWERCASE or first in UPPERCASE
-    assert len(password) == 16
+    assert len(password) == config.length
     lowercase = sum([1 for x in password if x in LOWERCASE])
     uppercase = sum([1 for x in password if x in UPPERCASE])
-    assert uppercase + lowercase == 14
+    letters = uppercase + lowercase
+    assert letters == (config.length - config.decimal - config.specials)
     decimal = sum([1 for x in password if x in DECIMAL])
-    assert decimal == 1
+    assert decimal == config.decimal
     specials = sum([1 for x in password if x in SPECIAL_CHARACTERS])
-    assert specials == 1
+    assert specials == config.specials
+    repeats = sum([1 for x in password if password.count(x) > 1])
+    assert (repeats > 0) == config.allow_repeats
 
 
 def test_password() -> None:
     config = PasswordRequirements()  # default
     password = generate_password(config)
-    assert_password_satisfies_default(password)
+    assert_password_is_expected(password, config)
+
+
+def test_repeats() -> None:
+    config = PasswordRequirements(decimal=18, specials=0, length=20, allow_repeats=True)
+    password = generate_password(config)
+    assert_password_is_expected(password, config)
 
 
 def test_config() -> None:
@@ -42,4 +51,4 @@ def test_main(monkeypatch: pytest.MonkeyPatch, capfd: pytest.CaptureFixture) -> 
     main()
     (out, err) = capfd.readouterr()
     password = out.rstrip("\n")
-    assert_password_satisfies_default(password)
+    assert_password_is_expected(password, PasswordRequirements())

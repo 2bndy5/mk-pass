@@ -1,4 +1,4 @@
-[cli-doc]: https://2bndy5.github.io/mk-pass/cli/
+[cli-doc]: https://mk-pass.readthedocs.io/en/latest/cli/
 
 <!-- start -->
 
@@ -35,7 +35,7 @@ Admittedly, the word "comprehensive" is not a scientific term.
 In this software, the term "comprehensive" boasts the following features
 when generating a password:
 
-1. No characters are repeated.
+1. No characters are repeated (unless explicitly allowed).
 2. Ensure at least one of each type of character is present:
     - uppercase letters
     - lowercase letters

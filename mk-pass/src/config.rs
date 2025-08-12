@@ -1,7 +1,7 @@
 use crate::helpers::{DECIMAL, LOWERCASE, SPECIAL_CHARACTERS, UPPERCASE};
 
 #[cfg(feature = "clap")]
-use clap::Parser;
+use clap::{ArgAction, Parser};
 
 /// A structure to describe password requirements.
 #[cfg_attr(
@@ -32,10 +32,25 @@ pub struct PasswordRequirements {
             help = "Do not restrict the first character to only letters.",
             long_help = "Do not restrict the first character to only letters.\
             \n\nBy default, the first character is always a letter.",
-            action = clap::ArgAction::SetFalse
+            action = ArgAction::SetFalse
         )
     )]
     pub first_is_letter: bool,
+
+    /// Allow characters to be used more than once?
+    #[cfg_attr(
+        feature = "clap",
+        arg(
+            short = 'r',
+            long,
+            help = "Allow character to used more than once.",
+            long_help = "Allow character to used more than once.\
+            \n\nBy default, each generated character is only used once.\n\
+            Allowing repetitions also relaxes the maximum length.",
+            action = ArgAction::SetTrue
+        )
+    )]
+    pub allow_repeats: bool,
 }
 
 impl PasswordRequirements {
@@ -53,6 +68,7 @@ impl PasswordRequirements {
     ///    - 62 if only letters and decimal integers are used
     ///    - 68 if only letters and special characters are used
     ///    - 78 if letters, decimal integers, and special characters are used
+    ///    - [u16::MAX] if repeated characters are allowed
     /// 3. `specials` character count does not overrule the required number of
     ///
     ///    - letters (2; 1 uppercase and 1 lowercase)
@@ -86,32 +102,40 @@ impl PasswordRequirements {
     /// assert_eq!(req.validate(), expected);
     /// ```
     pub fn validate(&self) -> Self {
-        let len = self.length.max(10).min(
-            UPPERCASE.len() as u16
-                + LOWERCASE.len() as u16
-                + {
-                    if self.specials > 0 {
-                        SPECIAL_CHARACTERS.len() as u16
-                    } else {
-                        0
+        let mut len = self.length.max(10);
+        if !self.allow_repeats {
+            len = len.min(
+                UPPERCASE.len() as u16
+                    + LOWERCASE.len() as u16
+                    + {
+                        if self.specials > 0 {
+                            SPECIAL_CHARACTERS.len() as u16
+                        } else {
+                            0
+                        }
                     }
-                }
-                + {
-                    if self.decimal > 0 {
-                        DECIMAL.len() as u16
-                    } else {
-                        0
-                    }
-                },
-        );
+                    + {
+                        if self.decimal > 0 {
+                            DECIMAL.len() as u16
+                        } else {
+                            0
+                        }
+                    },
+            );
+        }
         let non_letter_max_len = len - 2;
-        let max_special = non_letter_max_len - self.decimal.min(non_letter_max_len - 1);
+        let max_special = if self.specials > 0 {
+            non_letter_max_len - self.decimal.min(non_letter_max_len - 1)
+        } else {
+            0
+        };
         let max_decimal = non_letter_max_len - max_special;
         Self {
             length: len,
             decimal: self.decimal.min(max_decimal),
             specials: self.specials.min(max_special),
             first_is_letter: self.first_is_letter,
+            allow_repeats: self.allow_repeats,
         }
     }
 }
@@ -124,6 +148,7 @@ impl Default for PasswordRequirements {
             decimal: 1,
             specials: 1,
             first_is_letter: true,
+            allow_repeats: false,
         }
     }
 }

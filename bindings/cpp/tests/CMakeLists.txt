@@ -6,6 +6,7 @@ set(test_main validate-main)
 set(TEST_LIST
     validate-config
     validate-password
+    validate-repeats
     ${test_main}
 )
 

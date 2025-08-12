@@ -36,15 +36,16 @@ uint16_t count(char* str_buf, uint16_t len, CharType char_t) {
 
 int main() {
     mk_pass::PasswordRequirements config = {
-        16,   // length
-        4,    // decimal
-        4,    // specials
-        true, // firstIsLetter
+        16,    // length
+        4,     // decimal
+        4,     // specials
+        true,  // firstIsLetter
+        false, // allowRepeats
     };
     // allocate a buffer on the heap. length + 1 allows for null terminator
     char* buf = new char[config.length + 1];
     // initialize the buf so that the null terminator is only at the end
-    memset(buf, '0', config.length);
+    memset(buf, '\n', config.length);
     buf[config.length] = 0;
 
     uint16_t len = mk_pass::generatePassword(buf, config);

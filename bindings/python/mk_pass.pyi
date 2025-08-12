@@ -7,6 +7,7 @@ class PasswordRequirements(NamedTuple):
     decimal: int = 1
     specials: int = 1
     first_is_letter: bool = True
+    allow_repeats: bool = False
 
     def validate(self) -> "PasswordRequirements": ...
 
