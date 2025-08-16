@@ -248,3 +248,39 @@ a.md-annotation__index {
         transform: scale(.95)
     }
 }
+
+.doc.doc-label>code {
+    background-color: var(--md-accent-fg-color--transparent);
+    color: var(--md-accent-fg-color);
+    outline: solid var(--md-accent-fg-color) 1px;
+    border-radius: 2em;
+    padding: 0.25em 0.5em;
+}
+
+.doc.doc-label {
+    float: right;
+}
+
+.doc-symbol-toc.doc-symbol-parameter::after {
+    content: "P";
+}
+
+.doc-symbol-toc.doc-symbol-attribute::after {
+    content: "A";
+}
+
+.doc-symbol-toc.doc-symbol-function::after {
+    content: "F";
+}
+
+.doc-symbol-toc.doc-symbol-method::after {
+    content: "M";
+}
+
+.doc-symbol-toc.doc-symbol-class::after {
+    content: "C";
+}
+
+.doc-symbol-toc.doc-symbol-module::after {
+    content: "M";
+}

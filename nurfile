@@ -181,7 +181,7 @@ def "nur install" [
     if $all or $py {
         let built_python = ^uv pip show mk-pass | complete | get exit_code | ($in == 0)
         if (not $dirty) or (not $built_python) {
-            run-cmd uv sync --package mk-pass --all-groups --reinstall-package mk-pass
+            run-cmd uv sync --dev --group py --reinstall-package mk-pass
         }
     }
 }
@@ -211,7 +211,7 @@ def "nur docs" [
     run-cmd doxygen
     cd ../../
 
-    mut uv_sync_opts = [uv sync --all-groups]
+    mut uv_sync_opts = [uv sync --group py --group docs]
     if not $dirty {
         $uv_sync_opts = (
             $uv_sync_opts
@@ -252,12 +252,9 @@ def "nur lint" [] {
     let elapsed = timeit {|| $cpp_files | par-each {|f| clang-format -i --style file $f}}
     print $"(ansi purple)clang-formatted ($cpp_files | length) files in ($elapsed)(ansi reset)"
 
-    for f in $cpp_files {
-        print $f
-    }
-    run-cmd uv run --directory bindings/python ruff check
-    run-cmd uv run --directory bindings/python ruff format
-    run-cmd uv run --directory bindings/python mypy
+    run-cmd uv run ruff check
+    run-cmd uv run ruff format
+    run-cmd uv run mypy
 
     run-cmd ...(
         [cargo clippy --fix --allow-dirty --allow-staged --all-features]

@@ -156,7 +156,7 @@ jobs:
       - name: Setup Rust
         run: rustup update --no-self-update
       - name: Install Workflow Dependencies
-        run: uv sync --package mk-pass
+        run: uv sync --group py
       - name: Run pytest
         run: uv run pytest -v --color yes
 
