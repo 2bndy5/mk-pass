@@ -40,4 +40,12 @@ endif()
 
 add_executable(mk-pass src/main.cpp)
 target_link_libraries(mk-pass mk_pass)
-# install()
+
+install(TARGETS mk_pass
+    DESTINATION lib
+)
+
+install(FILES
+        include/mk_pass.hpp
+    DESTINATION include/mk_pass
+)
