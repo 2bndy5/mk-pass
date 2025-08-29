@@ -92,7 +92,7 @@ def is-on-main [] {
 #
 # This requires a token in $env.CARGO_REGISTRY_TOKEN for authentication.
 def deploy-crate [] {
-    ^cargo publish
+    ^cargo publish -p mk-pass
 }
 
 # The main function of this script.
