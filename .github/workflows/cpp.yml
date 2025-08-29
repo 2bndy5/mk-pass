@@ -22,7 +22,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Configure build
         run: cmake -B bindings/cpp/build -S bindings/cpp -D MK_PASS_TESTS=ON
       - name: Build
@@ -33,7 +33,7 @@ jobs:
   format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install clang-format
         run: sudo apt-get install clang-format-14
       - name: Setup nushell
@@ -53,7 +53,7 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Doxygen
         env:
           DOXYGEN_VERSION: '1.14.0'
