@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD041 -->
 [cli-doc]: https://mk-pass.readthedocs.io/en/latest/cli/
-[changelog-link]: https://mk-pass.readthedocs.io/en/latest/changelog/
+[changelog-link]: https://mk-pass.readthedocs.io/en/latest/CHANGELOG/
 
 <!-- start -->
 

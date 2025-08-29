@@ -27,7 +27,7 @@ This cross-platform compatible software will generate a password comprehensively
 [rtd-badge]: https://img.shields.io/readthedocs/mk-pass
 [rtd-link]: https://mk-pass.readthedocs.io/
 [changelog-badge]: https://img.shields.io/badge/keep_a_change_log-v1.1.0-ffec3d
-[changelog-link]: https://mk-pass.readthedocs.io/en/latest/changelog/
+[changelog-link]: https://mk-pass.readthedocs.io/en/latest/CHANGELOG/
 
 ## Features
 

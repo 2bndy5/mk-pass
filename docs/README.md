@@ -1,9 +1,9 @@
 # Docs
 
-This folder is only for generating the documentation about CLI and runtime permissions.
+This folder is only for generating the documentation about CLI and API.
 Please [visit our website][gh-pages] to see generated documentation.
 
-[gh-pages]: https://2bndy5.github.io/mk-pass
+[gh-pages]: https://mk-pass.readthedocs.io/
 
 ## Build and inspect locally
 
