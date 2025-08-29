@@ -1,0 +1,11 @@
+# file to hold metadata about the latest supported version of each CLI option
+length:
+  minimum-version: '0.1.0'
+decimal:
+  minimum-version: '0.1.0'
+specials:
+  minimum-version: '0.1.0'
+no-first-is-letter:
+  minimum-version: '0.1.0'
+allow-repeats:
+  minimum-version: '0.1.0'

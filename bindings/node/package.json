@@ -1,0 +1,96 @@
+{
+  "name": "@mk-pass/mk-pass",
+  "version": "0.0.0",
+  "description": "Template project for writing node package with napi-rs",
+  "main": "index.js",
+  "repository": "git@github.com:napi-rs/package-template.git",
+  "license": "MIT",
+  "keywords": [
+    "password",
+    "generator",
+    "napi-rs",
+    "NAPI",
+    "N-API",
+    "Rust",
+    "node-addon",
+    "node-addon-api"
+  ],
+  "files": [
+    "index.d.ts",
+    "index.js"
+  ],
+  "bin": "cli.js",
+  "napi": {
+    "binaryName": "mk-pass",
+    "targets": [
+      "x86_64-pc-windows-msvc",
+      "x86_64-apple-darwin",
+      "x86_64-unknown-linux-gnu",
+      "x86_64-unknown-linux-musl",
+      "aarch64-unknown-linux-gnu",
+      "i686-pc-windows-msvc",
+      "armv7-unknown-linux-gnueabihf",
+      "aarch64-apple-darwin",
+      "aarch64-linux-android",
+      "x86_64-unknown-freebsd",
+      "aarch64-unknown-linux-musl",
+      "aarch64-pc-windows-msvc",
+      "armv7-linux-androideabi",
+      "universal-apple-darwin",
+      "wasm32-wasip1-threads"
+    ]
+  },
+  "engines": {
+    "node": ">= 10.16.0 < 11 || >= 11.8.0 < 12 || >= 12.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "bench": "node --import @oxc-node/core/register benchmark/bench.ts",
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "format": "prettier . -w",
+    "lint": "oxlint .",
+    "prepublishOnly": "napi prepublish -t npm",
+    "universal": "napi universalize",
+    "test": "ava",
+    "version": "napi version"
+  },
+  "devDependencies": {
+    "@emnapi/core": "1.4.5",
+    "@emnapi/runtime": "1.4.5",
+    "@napi-rs/cli": "3.0.3",
+    "@oxc-node/core": "0.0.30",
+    "@tybys/wasm-util": "0.10.0",
+    "ava": "6.4.1",
+    "oxlint": "1.8.0",
+    "prettier": "3.6.2",
+    "tinybench": "4.0.1",
+    "typescript": "5.8.3"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "timeout": "2m",
+    "workerThreads": false,
+    "environmentVariables": {
+      "OXC_TSCONFIG_PATH": "./__test__/tsconfig.json"
+    },
+    "nodeArguments": [
+      "--import",
+      "@oxc-node/core/register"
+    ]
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "trailingComma": "all",
+    "singleQuote": true,
+    "arrowParens": "always"
+  },
+  "packageManager": "yarn@4.9.2"
+}

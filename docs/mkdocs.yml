@@ -1,0 +1,128 @@
+site_name: mk-pass
+site_description: "Documentation for the mk-pass package."
+site_url: "https://2bndy5.github.io/mk-pass"
+repo_url: "https://github.com/2bndy5/mk-pass"
+repo_name: "2bndy5/mk-pass"
+edit_uri: "edit/main/docs/docs/"
+nav:
+  - index.md
+  - cli.md
+  - Python API: python.md
+  - Node.js API: node-api/index.html
+  - Rust API: rust-api/doc/mk_pass/index.html
+  - C++ API: cpp-api/html/index.html
+  - CHANGELOG.md
+  - contributing.md
+  - other-licenses.md
+exclude_docs: |
+  rust-api/doc/static.files/*.md
+
+theme:
+  name: material
+  features:
+    - navigation.top
+    - content.tabs.link
+    - content.tooltips
+    - content.code.annotate
+    - content.code.copy
+    - content.action.view
+    - content.action.edit
+    - navigation.footer
+    - search.suggest
+    - search.share
+    - navigation.tracking
+    - toc.follow
+  logo: images/key-large.png
+  favicon: images/favicon.ico
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      primary: blue
+      accent: cyan
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: cyan
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: cyan
+      toggle:
+        icon: material/lightbulb
+        name: Switch to system preference
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/2bndy5/mk-pass
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/mk-pass/
+    - icon: fontawesome/brands/npm
+      link: https://www.npmjs.com/package/@mk-pass/mk-pass
+    - icon: simple/rust
+      link: https://crates.io/crates/2bndy5
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search
+  - include-markdown
+  - gen-files:
+      scripts:
+        - scripts/gen_cli_doc.py
+        - scripts/license_gen.py
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ['../mk-pass']
+          inventories: ['https://docs.python.org/3/objects.inv']
+          options:
+            extensions:
+              - scripts/py_native_docstring.py
+            allow_inspection: false
+            show_if_no_docstring: true
+            show_signature_annotations: true
+            separate_signature: true
+            signature_crossrefs: true
+            show_source: false
+            show_symbol_type_toc: true
+            docstring_section_style: list
+            show_root_heading: true
+            members_order: source
+            merge_init_into_class: true
+
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      linenums_style: pymdownx-inline
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      check_paths: true
+  - attr_list
+  - admonition
+  - markdown_gfm_admonition
+
+# Hooks
+hooks:
+  - scripts/badge_hook.py

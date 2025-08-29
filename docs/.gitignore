@@ -1,0 +1,6 @@
+
+# generated docs
+docs/node-api/**
+docs/rust-api/**
+docs/cpp-api/**
+site/

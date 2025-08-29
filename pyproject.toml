@@ -1,0 +1,33 @@
+[project]
+name = "mk-pass-ws"
+version = "0.0.0+private-virtual"
+requires-python = ">=3.9"
+dependencies = []
+classifiers = ["Private :: Do Not Upload"]
+
+[tool.uv.sources]
+mk-pass = { workspace = true }
+cli-gen = { workspace = true }
+
+[tool.uv.workspace]
+members = ["bindings/python", "docs"]
+
+[dependency-groups]
+docs = ["cli-gen"]
+py = ["mk-pass[test]"]
+dev = [
+    "maturin==1.9.3",
+    "mypy==1.17.1",
+    "patchelf==0.17.2.2 ; sys_platform == 'linux'",
+    "pre-commit==4.2.0",
+    "ruff==0.12.9",
+    "types-pyyaml==6.0.12.20250516",
+]
+
+[tool.mypy]
+files = [
+    "bindings/python/tests",
+    "bindings/python/mk_pass.pyi",
+    "docs/scripts",
+    "docs/cli_gen.pyi",
+]

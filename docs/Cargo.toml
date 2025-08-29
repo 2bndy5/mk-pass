@@ -1,0 +1,18 @@
+
+[package]
+name = "cli-gen"
+description = "A function exposed in python that generates a CLI doc from rust source code."
+edition.workspace = true
+repository.workspace = true
+version.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+mk-pass = { path = "../mk-pass", features = ["clap"] }
+pyo3 = { version = "0.25.1", features = ["extension-module"] }
+
+[lib]
+name = "cli_gen"
+crate-type = ["cdylib"]
+bench = false

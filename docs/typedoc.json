@@ -1,0 +1,7 @@
+{
+    "favicon": "docs/images/favicon.ico",
+    "customCss": "docs/stylesheets/typedoc.css",
+    "hostedBaseUrl": "https://2bndy5.github.io/mk-pass/node-api",
+    "includeHierarchySummary": false,
+    "readme": "../README.md",
+}

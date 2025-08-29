@@ -1,0 +1,54 @@
+
+
+# Read the Docs configuration file
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+# Required
+version: 2
+
+# Set the OS, Python version, and other tools you might need
+build:
+  os: ubuntu-24.04
+  tools:
+    nodejs: latest
+    rust: latest
+    python: latest
+  jobs:
+    pre_create_environment:
+      - >-
+        UV_INSTALL_DIR="${HOME}/.local/bin" &&
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+      - ${HOME}/.local/bin/uv sync --all-groups
+    post_create_environment:
+      - corepack enable
+      - corepack prepare --activate yarn@4.9.2
+      - asdf reshim nodejs
+      # Install doxygen from source distributions (conda forge does not keep up-to-date doxygen releases)
+      - >
+        DOXYGEN_VERSION="1.14.0" &&
+        mkdir -p ${HOME}/.doxygen && cd ${HOME}/.doxygen &&
+        echo $(pwd) &&
+        echo "https://sourceforge.net/projects/doxygen/files/rel-${DOXYGEN_VERSION}/doxygen-${DOXYGEN_VERSION}.linux.bin.tar.gz" &&
+        curl -L https://sourceforge.net/projects/doxygen/files/rel-${DOXYGEN_VERSION}/doxygen-${DOXYGEN_VERSION}.linux.bin.tar.gz > doxygen.tar.gz &&
+        gunzip doxygen.tar.gz &&
+        tar xf doxygen.tar &&
+        mv doxygen-${DOXYGEN_VERSION}/bin/doxygen ${HOME}/.local/bin/
+    pre_build:
+      - yarn install
+      - yarn build:debug
+    build:
+      html:
+        - cargo doc -p mk-pass --lib --no-deps --target-dir docs/docs/rust-api
+        - yarn docs
+        - >-
+          cd bindings/cpp &&
+          ${HOME}/.local/bin/doxygen
+        - >-
+          ${HOME}/.local/bin/uv run
+          mkdocs build --config-file docs/mkdocs.yml
+    post_build:
+      - mkdir -p ${READTHEDOCS_OUTPUT}/html/
+      - mv docs/site/* ${READTHEDOCS_OUTPUT}/html
+
+mkdocs:
+  configuration: docs/mkdocs.yml

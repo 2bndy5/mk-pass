@@ -1,0 +1,15 @@
+[package]
+name = "mk-pass-cpp"
+description.workspace = true
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+mk-pass = { path = "../../mk-pass", features = ["clap"] }
+
+[lib]
+name = "mk_pass"
+crate-type = ["cdylib", "staticlib"]
