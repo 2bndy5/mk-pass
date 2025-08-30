@@ -50,6 +50,10 @@ def bump-version [
         | first
     )
     print $"bumped ($result | get old) to ($result | get new)"
+    cd bindings/node
+    ^yarn version ($result | get new)
+    print 'Updated version in bindings/node/package.json'
+    cd '../..'
     $result | get new
 }
 

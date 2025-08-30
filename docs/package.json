@@ -6,7 +6,7 @@
     "docs": "typedoc ../bindings/node/index.d.ts --out ./docs/node-api"
   },
   "devDependencies": {
-    "typedoc": "^0.28.9",
-    "typescript": "^5.9.2"
+    "typedoc": "0.28.11",
+    "typescript": "5.9.2"
   }
 }

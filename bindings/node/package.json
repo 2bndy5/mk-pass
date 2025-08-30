@@ -1,9 +1,9 @@
 {
   "name": "@mk-pass/mk-pass",
-  "version": "0.0.0",
-  "description": "Template project for writing node package with napi-rs",
+  "version": "0.1.0",
+  "description": "A comprehensive password generator.",
   "main": "index.js",
-  "repository": "git@github.com:napi-rs/package-template.git",
+  "repository": "git@github.com:2bndy5/mk-pass.git",
   "license": "MIT",
   "keywords": [
     "password",
@@ -63,12 +63,12 @@
     "@emnapi/core": "1.4.5",
     "@emnapi/runtime": "1.4.5",
     "@napi-rs/cli": "3.0.3",
-    "@oxc-node/core": "0.0.30",
+    "@oxc-node/core": "0.0.32",
     "@tybys/wasm-util": "0.10.0",
     "ava": "6.4.1",
     "oxlint": "1.8.0",
     "prettier": "3.6.2",
-    "tinybench": "4.0.1",
+    "tinybench": "5.0.1",
     "typescript": "5.8.3"
   },
   "ava": {
