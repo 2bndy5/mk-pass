@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 <!-- markdownlint-disable MD024 -->
 
-## [0.1.0] - 2025-08-29
+## [0.1.0] - 2025-08-30
 
 ### <!-- 1 --> 🚀 Added
 
@@ -19,11 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### <!-- 6 --> 📦 Dependency updates
 
 - Bump the actions group with 2 updates by @dependabot[bot] in [#2](https://github.com/2bndy5/mk-pass/pull/2)
+- Upgrade cargo dependencies by @2bndy5 in [`c25c786`](https://github.com/2bndy5/mk-pass/commit/c25c786e67b1d783004fe86adf9a7cea722dd995)
 
 ### <!-- 8 --> 📝 Documentation
 
 - Rename changelog file by @2bndy5 in [`79dd2e4`](https://github.com/2bndy5/mk-pass/commit/79dd2e4099041e87cb451114da9ddd8725775503)
 - Update badge link by @2bndy5 in [`b317978`](https://github.com/2bndy5/mk-pass/commit/b317978fa4b4e5f208f94a35951f6c053867e3ef)
+
+### <!-- 9 --> 🗨️ Changed
+
+- Review release process by @2bndy5 in [`762471f`](https://github.com/2bndy5/mk-pass/commit/762471f5de4f061b07819c41174516e530445dc5)
 
 [0.1.0]: https://github.com/2bndy5/mk-pass/compare/ee36e009b3f25b06f95ecd265eaadac9e59e6749...v0.1.0
 
