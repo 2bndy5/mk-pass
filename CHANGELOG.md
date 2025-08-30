@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 <!-- markdownlint-disable MD024 -->
 
+## [0.1.1] - 2025-08-30
+
+### <!-- 6 --> 📦 Dependency updates
+
+- Fix publishing npm package by @2bndy5 in [`2469d28`](https://github.com/2bndy5/mk-pass/commit/2469d285de2972af1625d32a8606d0a144a75e27)
+
+[0.1.1]: https://github.com/2bndy5/mk-pass/compare/v0.1.0...v0.1.1
+
+Full commit diff: [`v0.1.0...v0.1.1`][0.1.1]
+
 ## [0.1.0] - 2025-08-30
 
 ### <!-- 1 --> 🚀 Added
@@ -20,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bump the actions group with 2 updates by @dependabot[bot] in [#2](https://github.com/2bndy5/mk-pass/pull/2)
 - Upgrade cargo dependencies by @2bndy5 in [`c25c786`](https://github.com/2bndy5/mk-pass/commit/c25c786e67b1d783004fe86adf9a7cea722dd995)
+- Bump version to v0.1.0 by @2bndy5 in [`d2f0021`](https://github.com/2bndy5/mk-pass/commit/d2f002139d8a85a7f9f2dc6853f00f6fcc205c0b)
 
 ### <!-- 8 --> 📝 Documentation
 
