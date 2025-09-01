@@ -10,7 +10,7 @@ license.workspace = true
 
 [dependencies]
 mk-pass = { path = "../mk-pass", features = ["clap"] }
-pyo3 = { version = "0.25.1", features = ["extension-module"] }
+pyo3 = { version = "0.26.0", features = ["extension-module"] }
 
 [lib]
 name = "cli_gen"
