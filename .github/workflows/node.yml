@@ -11,16 +11,20 @@ on:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
     paths:
-      - crates/**/*.rs
+      - '**/*.{rs,ts,js}'
+      - Cargo.lock
       - bindings/node/**
-      - '!**/*.md'
+      - '!bindings/cpp/**'
+      - '!bindings/python/**'
       - .github/workflows/node.yml
   pull_request:
     branches: [main]
     paths:
-      - crates/**/*.rs
+      - '**/*.{rs,ts,js,cjs,mjs}'
+      - Cargo.lock
       - bindings/node/**
-      - '!**/*.md'
+      - '!bindings/cpp/**'
+      - '!bindings/python/**'
       - .github/workflows/node.yml
 
 jobs:
