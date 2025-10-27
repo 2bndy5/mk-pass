@@ -58,7 +58,7 @@ jobs:
           sccache: 'true'
           manylinux: auto
       - name: Upload wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: wheels-linux-${{ matrix.platform.target }}
           path: bindings/python/dist/*
@@ -86,7 +86,7 @@ jobs:
           working-directory: bindings/python
           sccache: 'true'
       - name: Upload wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: wheels-windows-${{ matrix.platform.target }}
           path: bindings/python/dist/*
@@ -114,7 +114,7 @@ jobs:
           working-directory: bindings/python
           sccache: 'true'
       - name: Upload wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: wheels-macos-${{ matrix.platform.target }}
           path: bindings/python/dist/*
@@ -133,7 +133,7 @@ jobs:
           args: --out dist
           working-directory: bindings/python
       - name: Upload sdist
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: wheels-sdist
           path: bindings/python/dist/*
@@ -177,7 +177,7 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           pattern: wheels-*
           path: dist

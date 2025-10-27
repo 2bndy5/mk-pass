@@ -154,7 +154,7 @@ jobs:
           mv target/${{ matrix.target }}/release/mk-pass${{ runner.os == 'Windows' && '.exe' || '' }}
           ./mk-pass-${{ matrix.target }}${{ runner.os == 'Windows' && '.exe' || '' }}
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: mk-pass-${{ matrix.target }}
           path: mk-pass-${{ matrix.target }}*
@@ -174,7 +174,7 @@ jobs:
       - name: Build API docs
         run: cargo doc --no-deps --lib -p mk-pass
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: rust-api-docs
           path: target/doc/mk_pass
@@ -192,7 +192,7 @@ jobs:
       - name: Install Rust
         run: rustup update stable --no-self-update
       - name: Download built assets
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           pattern: mk-pass-*
           path: dist
