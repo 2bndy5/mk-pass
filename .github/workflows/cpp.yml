@@ -18,6 +18,8 @@ on:
       - 'mk-pass/**/*.rs'
       - .github/workflows/cpp.yml
 
+permissions: {}
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -34,10 +36,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - name: Install clang-format
         run: sudo apt-get install clang-format-14
       - name: Setup nushell
-        uses: hustcer/setup-nu@v3
+        uses: hustcer/setup-nu@3a97c8160c2bb5af321a03336e7addc28f94444e # v3.21
         with:
           version: "*"
       - name: Format
@@ -54,6 +58,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - name: Install Doxygen
         env:
           DOXYGEN_VERSION: '1.14.0'

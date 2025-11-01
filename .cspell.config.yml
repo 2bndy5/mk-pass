@@ -53,6 +53,7 @@ words:
   - orhun
   - oxlint
   - patchelf
+  - pipx
   - pyclass
   - pyfunction
   - pymdownx

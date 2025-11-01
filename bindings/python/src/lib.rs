@@ -1,7 +1,7 @@
 use pyo3::prelude::*;
 
 /// A python package binding the mk-pass library written in rust.
-#[pymodule]
+#[pymodule(gil_used = false)]
 pub mod mk_pass {
     use pyo3::prelude::*;
 
