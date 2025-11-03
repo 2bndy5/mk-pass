@@ -83,8 +83,7 @@ def "nur test cpp" [
     let is_dirty = "bindings/cpp/build" | path exists
     if $clean or (not $is_dirty) {
         if $is_dirty {
-            print "Purging previous build artifacts"
-            rm -r bindings/cpp/build/
+            run-cmd rm -r bindings/cpp/build/
         }
         cd bindings/cpp
         run-cmd ...[

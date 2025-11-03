@@ -25,7 +25,8 @@ on:
       - '!bindings/cpp/**'
       - .github/workflows/python.yml
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+permissions: {}
+
 jobs:
   linux:
     runs-on: ${{ matrix.platform.runner }}
@@ -46,6 +47,8 @@ jobs:
             target: ppc64le
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v6
         with:
           python-version: '3.x'
@@ -74,6 +77,8 @@ jobs:
             target: x86
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v6
         with:
           python-version: '3.x'
@@ -103,6 +108,8 @@ jobs:
             target: aarch64
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v6
         with:
           python-version: '3.x'
@@ -123,6 +130,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v6
         with:
           python-version: 3.x
@@ -144,9 +153,9 @@ jobs:
       - name: Checkout this Repo
         uses: actions/checkout@v5
         with:
-          fetch-depth: 0
+          persist-credentials: false
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # v7.1.2
         id: setup-uv
         with:
           enable-cache: true
@@ -168,14 +177,6 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - name: Checkout this Repo
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-
-      - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v7
-
       - name: Download artifacts
         uses: actions/download-artifact@v6
         with:
@@ -183,13 +184,17 @@ jobs:
           path: dist
           merge-multiple: true
 
+      - uses: actions/setup-python@v5
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        with:
+          python-version: '3.x'
       - name: twine Check
-        run: uvx twine check dist/*
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        run: pipx run twine check dist/*
 
       # now uses trusted publishing
       - name: Publish package PyPI
         if: startsWith(github.ref, 'refs/tags/')
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          verify-metadata: false
           skip-existing: true

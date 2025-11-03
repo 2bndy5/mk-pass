@@ -92,13 +92,6 @@ def is-on-main [] {
     $branch
 }
 
-# Publish this package to crates.io
-#
-# This requires a token in $env.CARGO_REGISTRY_TOKEN for authentication.
-def deploy-crate [] {
-    ^cargo publish -p mk-pass
-}
-
 # The main function of this script.
 #
 # The `component` parameter is a required CLI option:
@@ -124,8 +117,6 @@ def main [component: string] {
         git add --all
         git commit -m $"build: bump version to ($tag)"
         git push
-        print "Publishing crate"
-        deploy-crate
         print $"Deploying ($tag)"
         ^gh release create $tag --notes-file ".config/ReleaseNotes.md"
     } else if $is_main {

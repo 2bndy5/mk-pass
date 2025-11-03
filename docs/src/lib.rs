@@ -73,7 +73,7 @@ fn generate_cli_doc(metadata: HashMap<String, HashMap<String, Py<PyAny>>>) -> Py
     Ok(out)
 }
 
-#[pymodule]
+#[pymodule(gil_used = false)]
 pub fn cli_gen(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(generate_cli_doc, m)?)?;
     Ok(())

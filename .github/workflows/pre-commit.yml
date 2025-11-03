@@ -6,14 +6,18 @@ on:
   pull_request:
     branches: [main]
 
+permissions: {}
+
 jobs:
   all-files:
     # also lints python files
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # v7.1.2
         id: setup-uv
         with:
           enable-cache: true
@@ -28,6 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
       - name: Cache deps
         uses: actions/cache@v4
         with:
@@ -35,22 +41,46 @@ jobs:
           key: cargo-lint-${{ hashFiles('Cargo.lock') }}
       - name: Setup Rust
         run: rustup update --no-self-update
-      - run: cargo clippy
+      - run: cargo clippy -- -D warnings
       - run: cargo fmt --check
 
-  conventional-commit:
+  check-pr-title:
+    name: Check PR title
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout ${{ github.repository }} repo
+        # needed for cspell.config.yml (project-specific)
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Get PR title
+        id: get-title
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |-
+          pr_title=$(gh pr view "${PR_NUMBER}" --repo "${GH_REPO}" --json "title" -q ".title")
+          echo "title=${pr_title}" >> "${GITHUB_OUTPUT}"
       - run: rustup update --no-self-update
       - name: Install cargo-binstall
-        uses: cargo-bins/cargo-binstall@main
+        uses: cargo-bins/cargo-binstall@afcf9780305558bcc9e4bc94b7589ab2bb8b6106 # v1.15.9
       - name: Install committed
         run: cargo binstall -y committed
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Check PR title
-        run: >-
-          echo "${{ github.event.pull_request.title }}"
-          | committed --config .config/committed.toml --commit-file -
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: conventional-commit
+        env:
+          PR_TITLE: "${{ steps.get-title.outputs.title }}"
+        run: echo "${PR_TITLE}" | committed --config .config/committed.toml --commit-file -
+      - uses: actions/setup-node@v6
+        with:
+          node-version: latest
+      - name: spell check
+        env:
+          PR_TITLE: "${{ steps.get-title.outputs.title }}"
+        run: echo "${PR_TITLE}" | npx cspell-cli lint stdin
