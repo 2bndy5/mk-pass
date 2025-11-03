@@ -137,10 +137,25 @@ jobs:
           --target ${{ matrix.target }}
           --features bin
 
-      - name: Prepare artifacts
-        run: >-
-          mv target/${{ matrix.target }}/release/mk-pass${{ runner.os == 'Windows' && '.exe' || '' }}
-          ./mk-pass-${{ matrix.target }}${{ runner.os == 'Windows' && '.exe' || '' }}
+      - name: Prepare artifacts (unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |-
+          tgt="mk-pass"
+          mv "target/${{ matrix.target }}/release/${tgt}" "${tgt}"
+          arc_name="mk-pass-${{ matrix.target }}.tar.gz"
+          tar -a -c -v -z -f "${arc_name}" ${tgt} LICENSE
+      - name: Prepare artifacts (windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        # `tar.exe` in powershell is different from `tar` in bash.
+        # need to use `tar.exe` in powershell to create a valid zip file.
+        run: |-
+          $tgt = "mk-pass.exe"
+          mv "target/${{ matrix.target }}/release/${tgt}" "${tgt}"
+          $arc_name = "mk-pass-${{ matrix.target }}.zip"
+          tar -a -c -v -f "${arc_name}" ${tgt} LICENSE
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v5
         with:

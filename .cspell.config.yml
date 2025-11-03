@@ -54,6 +54,7 @@ words:
   - oxlint
   - patchelf
   - pipx
+  - pwsh
   - pyclass
   - pyfunction
   - pymdownx
