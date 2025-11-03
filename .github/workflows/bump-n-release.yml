@@ -76,6 +76,7 @@ jobs:
           uvx --constraints .github/requirements.txt
           git-cliff
           --config .config/cliff.toml
+          --bump
           --unreleased
           --output "${GITHUB_STEP_SUMMARY}"
         env:
