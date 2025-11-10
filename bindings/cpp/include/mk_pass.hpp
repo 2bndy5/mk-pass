@@ -1,7 +1,7 @@
 #ifndef MK_PASS_H_
 #define MK_PASS_H_
 
-/* Generated with cbindgen:0.29.0 */
+/* Generated with cbindgen:0.29.2 */
 
 #include <stdint.h>
 

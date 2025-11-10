@@ -1,6 +1,6 @@
 #![doc = include_str!("../README.md")]
 #![doc(
-    html_logo_url = "https://raw.githubusercontent.com/2bndy5/mk-pass/main/docs/docs/images/logo-square.png"
+    html_logo_url = "https://raw.githubusercontent.com/2bndy5/mk-pass/refs/heads/main/docs/docs/images/key-large.png"
 )]
 #![doc(
     html_favicon_url = "https://github.com/2bndy5/mk-pass/raw/main/docs/docs/images/favicon.ico"
