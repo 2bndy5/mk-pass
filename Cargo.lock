@@ -112,7 +112,7 @@ checksum = "b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675"
 
 [[package]]
 name = "cli-gen"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "mk-pass",
  "pyo3",
@@ -316,7 +316,7 @@ dependencies = [
 
 [[package]]
 name = "mk-pass"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "clap",
  "rand",
@@ -324,14 +324,14 @@ dependencies = [
 
 [[package]]
 name = "mk-pass-cpp"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "mk-pass",
 ]
 
 [[package]]
 name = "mk-pass-node"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "mk-pass",
  "napi",
@@ -341,7 +341,7 @@ dependencies = [
 
 [[package]]
 name = "mk-pass-py"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "mk-pass",
  "pyo3",
