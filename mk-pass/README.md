@@ -28,6 +28,17 @@ This cross-platform compatible software will generate a password comprehensively
 [changelog-link]: https://mk-pass.readthedocs.io/en/latest/CHANGELOG/
 [cli-doc]: https://mk-pass.readthedocs.io/en/latest/cli/
 
+[![crates-io-badge][crates-io-badge]][crates-io-link]
+[![pypi-badge][pypi-badge]][pypi-link]
+[![npm-badge][npm-badge]][npm-link]
+
+[crates-io-badge]: https://img.shields.io/crates/v/mk-pass
+[crates-io-link]: https://crates.io/crates/mk-pass
+[pypi-badge]: https://img.shields.io/pypi/v/mk-pass
+[pypi-link]: https://pypi.org/project/mk-pass
+[npm-badge]:https://img.shields.io/npm/v/%40mk-pass%2Fmk-pass
+[npm-link]: https://www.npmjs.com/package/@mk-pass/mk-pass
+
 ## Features
 
 Admittedly, the word "comprehensive" is not a scientific term.

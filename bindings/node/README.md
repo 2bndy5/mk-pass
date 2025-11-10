@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD041 -->
 [cli-doc]: https://mk-pass.readthedocs.io/en/latest/cli/
 
 <!-- start -->
@@ -28,6 +29,17 @@ This cross-platform compatible software will generate a password comprehensively
 [rtd-link]: https://mk-pass.readthedocs.io/
 [changelog-badge]: https://img.shields.io/badge/keep_a_change_log-v1.1.0-ffec3d
 [changelog-link]: https://mk-pass.readthedocs.io/en/latest/CHANGELOG/
+
+[![crates-io-badge][crates-io-badge]][crates-io-link]
+[![pypi-badge][pypi-badge]][pypi-link]
+[![npm-badge][npm-badge]][npm-link]
+
+[crates-io-badge]: https://img.shields.io/crates/v/mk-pass
+[crates-io-link]: https://crates.io/crates/mk-pass
+[pypi-badge]: https://img.shields.io/pypi/v/mk-pass
+[pypi-link]: https://pypi.org/project/mk-pass
+[npm-badge]:https://img.shields.io/npm/v/%40mk-pass%2Fmk-pass
+[npm-link]: https://www.npmjs.com/package/@mk-pass/mk-pass
 
 ## Features
 
