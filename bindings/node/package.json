@@ -54,7 +54,7 @@
     "build:debug": "napi build --platform",
     "format": "prettier . -w",
     "lint": "oxlint .",
-    "prepublishOnly": "napi prepublish -t npm",
+    "prepublishOnly": "napi prepublish -t npm --no-gh-release",
     "universal": "napi universalize",
     "test": "ava",
     "version": "napi version"
