@@ -64,7 +64,7 @@ jobs:
         env:
           DOXYGEN_VERSION: '1.14.0'
         run: |-
-          curl -L https://sourceforge.net/projects/doxygen/files/rel-${DOXYGEN_VERSION}/doxygen-${DOXYGEN_VERSION}.linux.bin.tar.gz > ${{ runner.temp }}/doxygen.tar.gz
+          curl -L https://github.com/doxygen/doxygen/releases/download/Release_${DOXYGEN_VERSION//./_}/doxygen-${DOXYGEN_VERSION}.linux.bin.tar.gz --output ${{ runner.temp }}/doxygen.tar.gz
           cd ${{ runner.temp }}
           gunzip doxygen.tar.gz
           tar xf doxygen.tar
