@@ -391,7 +391,7 @@ jobs:
     name: Publish
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      # needed for trusted publishing
       id-token: write
     needs:
       - build
@@ -407,8 +407,11 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: yarn
+      - name: Update npm
+        # to support trusted publishing
+        run: npm install -g npm@>=11.5.1
       - name: Install dependencies
         run: yarn install
       - name: Download native artifacts
@@ -427,15 +430,10 @@ jobs:
       - name: Move artifacts
         run: yarn artifacts
       - name: List packages
-        run: ls -R ./bindings/node/npm
         shell: bash
+        run: ls -R ./bindings/node/npm
       - run: yarn format
       - name: Publish
         if: startsWith(github.ref, 'refs/tags/')
         working-directory: bindings/node
-        run: |
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-          npm publish --access public --provenance true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
