@@ -6,11 +6,44 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 <!-- markdownlint-disable MD024 -->
 
+## [0.1.2] - 2025-11-10
+
+### <!-- 1 --> 🚀 Added
+
+- Enable pyo3 feature `abi3-py39` by @2bndy5 in [#7](https://github.com/2bndy5/mk-pass/pull/7)
+
+### <!-- 6 --> 📦 Dependency updates
+
+- Bump the actions group with 2 updates by @dependabot[bot] in [#5](https://github.com/2bndy5/mk-pass/pull/5)
+- Bump the cargo group across 1 directory with 2 updates by @dependabot[bot] in [#4](https://github.com/2bndy5/mk-pass/pull/4)
+- Bump clap from 4.5.47 to 4.5.48 in the cargo group by @dependabot[bot] in [#8](https://github.com/2bndy5/mk-pass/pull/8)
+- Bump mkdocs-include-markdown-plugin in /docs by @dependabot[bot] in [#9](https://github.com/2bndy5/mk-pass/pull/9)
+- Bump astral-sh/setup-uv from 6 to 7 in the actions group by @dependabot[bot] in [#10](https://github.com/2bndy5/mk-pass/pull/10)
+- Bump the cargo group with 2 updates by @dependabot[bot] in [#11](https://github.com/2bndy5/mk-pass/pull/11)
+- Bump actions/setup-node from 5 to 6 in the actions group by @dependabot[bot] in [#12](https://github.com/2bndy5/mk-pass/pull/12)
+- Bump the actions group with 2 updates by @dependabot[bot] in [#14](https://github.com/2bndy5/mk-pass/pull/14)
+- Bump the cargo group with 5 updates by @dependabot[bot] in [#13](https://github.com/2bndy5/mk-pass/pull/13)
+- Bump clap from 4.5.50 to 4.5.51 in the cargo group by @dependabot[bot] in [#17](https://github.com/2bndy5/mk-pass/pull/17)
+- Bump the actions group with 2 updates by @dependabot[bot] in [#16](https://github.com/2bndy5/mk-pass/pull/16)
+- Bump the cargo group with 3 updates by @dependabot[bot] in [#19](https://github.com/2bndy5/mk-pass/pull/19)
+- Bump the actions group with 3 updates by @dependabot[bot] in [#20](https://github.com/2bndy5/mk-pass/pull/20)
+
+### <!-- 9 --> 🗨️ Changed
+
+- Review CI workflows by @2bndy5 in [#15](https://github.com/2bndy5/mk-pass/pull/15)
+- Use proper compressed binaries as release assets by @2bndy5 in [`a055423`](https://github.com/2bndy5/mk-pass/commit/a0554238b355ce61799f0b9da81b29e9be151d72)
+- Use trusted publishing for npm deployments by @2bndy5 in [#21](https://github.com/2bndy5/mk-pass/pull/21)
+
+[0.1.2]: https://github.com/2bndy5/mk-pass/compare/v0.1.1...v0.1.2
+
+Full commit diff: [`v0.1.1...v0.1.2`][0.1.2]
+
 ## [0.1.1] - 2025-08-30
 
 ### <!-- 6 --> 📦 Dependency updates
 
 - Fix publishing npm package by @2bndy5 in [`2469d28`](https://github.com/2bndy5/mk-pass/commit/2469d285de2972af1625d32a8606d0a144a75e27)
+- Bump version to v0.1.1 by @2bndy5 in [`daf1db9`](https://github.com/2bndy5/mk-pass/commit/daf1db95e6453010fd1374588db59161de4b0c19)
 
 [0.1.1]: https://github.com/2bndy5/mk-pass/compare/v0.1.0...v0.1.1
 
