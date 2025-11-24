@@ -25,6 +25,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Configure build
         run: cmake -B bindings/cpp/build -S bindings/cpp -D MK_PASS_TESTS=ON
       - name: Build
