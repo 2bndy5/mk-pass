@@ -18,4 +18,4 @@ napi-derive = "3.3.3"
 mk-pass = { path = "../../mk-pass", features = ["clap"] }
 
 [build-dependencies]
-napi-build = "2.2.3"
+napi-build = "2.3.1"
