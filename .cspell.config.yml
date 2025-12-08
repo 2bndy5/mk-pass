@@ -11,6 +11,7 @@ words:
   - cbindgen
   - cdylib
   - clippy
+  - cooldown
   - crossrefs
   - ctest
   - Doherty
