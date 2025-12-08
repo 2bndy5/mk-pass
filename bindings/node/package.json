@@ -60,16 +60,16 @@
     "version": "napi version"
   },
   "devDependencies": {
-    "@emnapi/core": "1.4.5",
-    "@emnapi/runtime": "1.4.5",
-    "@napi-rs/cli": "3.0.3",
-    "@oxc-node/core": "0.0.32",
-    "@tybys/wasm-util": "0.10.0",
+    "@emnapi/core": "1.7.1",
+    "@emnapi/runtime": "1.7.1",
+    "@napi-rs/cli": "3.5.0",
+    "@oxc-node/core": "0.0.35",
+    "@tybys/wasm-util": "0.10.1",
     "ava": "6.4.1",
-    "oxlint": "1.8.0",
-    "prettier": "3.6.2",
-    "tinybench": "5.0.1",
-    "typescript": "5.8.3"
+    "oxlint": "1.31.0",
+    "prettier": "3.7.4",
+    "tinybench": "6.0.0",
+    "typescript": "5.9.3"
   },
   "ava": {
     "extensions": {
