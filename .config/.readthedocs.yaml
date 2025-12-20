@@ -26,7 +26,7 @@ build:
       - ${HOME}/.local/bin/uv sync --all-groups
     post_create_environment:
       - corepack enable
-      - corepack prepare --activate yarn@4.9.2
+      - corepack prepare --activate yarn@4.12.0
       - asdf reshim nodejs
       # Install doxygen from source distributions (conda forge does not keep up-to-date doxygen releases)
       - >
