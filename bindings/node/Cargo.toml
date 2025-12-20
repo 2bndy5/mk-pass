@@ -13,8 +13,8 @@ publish = false
 crate-type = ["cdylib"]
 
 [dependencies]
-napi = "3.6.1"
-napi-derive = "3.4.0"
+napi = "3.7.1"
+napi-derive = "3.4.1"
 mk-pass = { path = "../../mk-pass", features = ["clap"] }
 
 [build-dependencies]
