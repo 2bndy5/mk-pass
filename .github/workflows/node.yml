@@ -368,7 +368,7 @@ jobs:
           cache: yarn
       - name: Install dependencies
         run: |
-          yarn config set supportedArchitectures.cpu "wasm32"
+          yarn config set supportedArchitectures.cpu --json '["current", "wasm32"]'
           yarn install
       - name: Download artifacts
         uses: actions/download-artifact@v6

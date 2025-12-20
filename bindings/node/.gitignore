@@ -130,3 +130,4 @@ Cargo.lock
 /npm
 /index.js
 /index.d.ts
+*.wasm
