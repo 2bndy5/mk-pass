@@ -92,7 +92,7 @@ jobs:
           toolchain: stable
           targets: ${{ matrix.settings.target }}
       - name: Cache cargo
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cargo/registry/index/
@@ -123,7 +123,7 @@ jobs:
         run: ${{ matrix.settings.build }}
         shell: bash
       - name: Upload native module as artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: bindings-${{ matrix.settings.target }}
           path: |
@@ -132,7 +132,7 @@ jobs:
           if-no-files-found: error
       - name: Upload generated index.*s as artifact
         if: matrix.settings.target == 'armv7-unknown-linux-gnueabihf'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: generated-index
           path: bindings/node/index.*s
@@ -147,7 +147,7 @@ jobs:
           persist-credentials: false
       - name: Build
         id: build
-        uses: cross-platform-actions/action@46e8d7fb25520a8d6c64fd2b7a1192611da98eda # v0.30.0
+        uses: cross-platform-actions/action@492b0c80085400348c599edace11141a4ee73524 # v0.32.0
         env:
           DEBUG: napi:*
           RUSTUP_IO_THREADS: 1
@@ -181,7 +181,7 @@ jobs:
             rm -rf target
             rm -rf .yarn/cache
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: bindings-freebsd
           path: ${{ env.ARTIFACT_PATH }}.node
@@ -204,19 +204,19 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Download macOS x64 artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: bindings-x86_64-apple-darwin
           path: bindings/node
       - name: Download macOS arm64 artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: bindings-aarch64-apple-darwin
           path: bindings/node
       - name: Combine binaries
         run: yarn universal
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: bindings-universal-apple-darwin
           path: ${{ env.ARTIFACT_PATH }}.node
@@ -258,12 +258,12 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: bindings-${{ matrix.settings.target }}
           path: bindings/node
       - name: Download generated index artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: generated-index
           path: bindings/node
@@ -323,12 +323,12 @@ jobs:
           yarn config set --json supportedArchitectures.libc '["current", "musl", "gnu"]'
           yarn install
       - name: Download artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: bindings-${{ matrix.target }}
           path: bindings/node
       - name: Download generated index artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: generated-index
           path: bindings/node
@@ -371,12 +371,12 @@ jobs:
           yarn config set supportedArchitectures.cpu --json '["current", "wasm32"]'
           yarn install
       - name: Download artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: bindings-wasm32-wasip1-threads
           path: bindings/node
       - name: Download generated index artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: generated-index
           path: bindings/node
@@ -415,12 +415,12 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Download native artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           pattern: bindings-*
           path: bindings/node/artifacts
       - name: Download generated index artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: generated-index
           path: bindings/node

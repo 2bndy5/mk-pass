@@ -43,7 +43,7 @@ jobs:
       - name: Install clang-format
         run: sudo apt-get install clang-format-14
       - name: Setup nushell
-        uses: hustcer/setup-nu@3a97c8160c2bb5af321a03336e7addc28f94444e # v3.21
+        uses: hustcer/setup-nu@920172d92eb04671776f3ba69d605d3b09351c30 # v3.22
         with:
           version: "*"
       - name: Format
@@ -76,7 +76,7 @@ jobs:
         run: doxygen
         working-directory: bindings/cpp
       - name: Upload doxygen build artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           path: docs/docs/cpp-api/html
           name: cpp-api_docs
