@@ -32,7 +32,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Cache deps
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cargo
           key: rust-test-${{ hashFiles('Cargo.lock') }}
@@ -157,7 +157,7 @@ jobs:
           tar -a -c -v -f "${arc_name}" ${tgt} LICENSE
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: mk-pass-${{ matrix.target }}
           path: mk-pass-${{ matrix.target }}*
@@ -170,7 +170,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Cache deps
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cargo
           key: cargo-doc-${{ hashFiles('Cargo.lock') }}
@@ -179,7 +179,7 @@ jobs:
       - name: Build API docs
         run: cargo doc --no-deps --lib -p mk-pass
       - name: Upload artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: rust-api-docs
           path: target/doc/mk_pass
@@ -219,14 +219,14 @@ jobs:
       - name: Install Rust
         run: rustup update stable --no-self-update
       - name: Download built assets
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           pattern: mk-pass-*
           path: dist
           merge-multiple: true
 
       - name: Setup nushell
-        uses: hustcer/setup-nu@3a97c8160c2bb5af321a03336e7addc28f94444e # v3.21
+        uses: hustcer/setup-nu@920172d92eb04671776f3ba69d605d3b09351c30 # v3.22
         with:
           version: "*"
       - name: List release assets
