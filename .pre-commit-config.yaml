@@ -16,18 +16,18 @@ repos:
         args: ['--fix=lf']
         exclude: "tests/demo_project"
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.3
+    rev: v0.14.13
     hooks:
       # Run the linter.
       - id: ruff-check
       # Run the formatter.
       - id: ruff-format
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.18.2
+    rev: v1.19.1
     hooks:
       - id: mypy
-        additional_dependencies: [types-pyyaml>=6.0.12.20250516]
+        additional_dependencies: [types-pyyaml>=6.0.12.20250915]
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v9.2.1
+    rev: v9.4.0
     hooks:
       - id: cspell
