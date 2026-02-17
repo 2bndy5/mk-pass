@@ -1,7 +1,7 @@
 use pyo3::prelude::*;
 
 /// A python package binding the mk-pass library written in rust.
-#[pymodule(gil_used = false)]
+#[pymodule]
 pub mod mk_pass {
     use pyo3::prelude::*;
 
@@ -24,7 +24,7 @@ pub mod mk_pass {
 
     /// A structure to describe password requirements.
     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-    #[pyclass(module = "mk_pass", get_all, frozen, eq)]
+    #[pyclass(module = "mk_pass", get_all, frozen, eq, from_py_object)]
     pub struct PasswordRequirements {
         /// The length of the password.
         pub length: u16,
