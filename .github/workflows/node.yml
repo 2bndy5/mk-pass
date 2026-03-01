@@ -204,12 +204,12 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Download macOS x64 artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: bindings-x86_64-apple-darwin
           path: bindings/node
       - name: Download macOS arm64 artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: bindings-aarch64-apple-darwin
           path: bindings/node
@@ -258,12 +258,12 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Download artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: bindings-${{ matrix.settings.target }}
           path: bindings/node
       - name: Download generated index artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: generated-index
           path: bindings/node
@@ -323,12 +323,12 @@ jobs:
           yarn config set --json supportedArchitectures.libc '["current", "musl", "gnu"]'
           yarn install
       - name: Download artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: bindings-${{ matrix.target }}
           path: bindings/node
       - name: Download generated index artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: generated-index
           path: bindings/node
@@ -372,12 +372,12 @@ jobs:
           yarn config set supportedArchitectures.cpu --json '["current", "wasm32"]'
           yarn install
       - name: Download artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: bindings-wasm32-wasip1-threads
           path: bindings/node
       - name: Download generated index artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: generated-index
           path: bindings/node
@@ -416,12 +416,12 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Download native artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: bindings-*
           path: bindings/node/artifacts
       - name: Download generated index artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: generated-index
           path: bindings/node
