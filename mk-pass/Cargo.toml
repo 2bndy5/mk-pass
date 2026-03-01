@@ -8,8 +8,8 @@ repository.workspace = true
 authors.workspace = true
 
 [dependencies]
-clap = { version = "4.5.53", features = ["derive"], optional = true }
-rand = "0.9.2"
+clap = { version = "4.5.60", features = ["derive"], optional = true }
+rand = "0.10.0"
 
 [features]
 clap = ["dep:clap"]
