@@ -16,11 +16,11 @@ members = ["bindings/python", "docs"]
 docs = ["cli-gen"]
 py = ["mk-pass[test]"]
 dev = [
-    "maturin==1.11.5",
+    "maturin==1.12.6",
     "mypy==1.19.1",
-    "patchelf==0.17.2.2 ; sys_platform == 'linux'",
+    "patchelf==0.17.2.4 ; sys_platform == 'linux'",
     "pre-commit==4.3.0",
-    "ruff==0.14.13",
+    "ruff==0.15.4",
     "types-pyyaml==6.0.12.20250915",
 ]
 
