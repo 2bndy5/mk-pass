@@ -65,8 +65,8 @@
     "@napi-rs/cli": "3.5.1",
     "@oxc-node/core": "0.0.35",
     "@tybys/wasm-util": "0.10.1",
-    "ava": "6.4.1",
-    "oxlint": "1.50.0",
+    "ava": "7.0.0",
+    "oxlint": "1.51.0",
     "prettier": "3.8.1",
     "tinybench": "6.0.0",
     "typescript": "5.9.3"
