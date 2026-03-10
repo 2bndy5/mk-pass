@@ -93,6 +93,7 @@ words:
   - Werror
   - yarnrc
   - zigbuild
+  - zizmor
 ignorePaths:
   - .env/**
   - .venv/**
