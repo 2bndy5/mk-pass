@@ -76,7 +76,7 @@ jobs:
         run: doxygen
         working-directory: bindings/cpp
       - name: Upload doxygen build artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           path: docs/docs/cpp-api/html
           name: cpp-api_docs
