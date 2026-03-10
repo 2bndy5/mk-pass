@@ -53,12 +53,12 @@ jobs:
         with:
           python-version: '3.x'
       - name: Build wheels
-        uses: PyO3/maturin-action@v1
+        uses: PyO3/maturin-action@04ac600d27cdf7a9a280dadf7147097c42b757ad # v1.50.1
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
           working-directory: bindings/python
-          sccache: 'true'
+          sccache: ${{ startsWith(github.ref, 'refs/tags') && 'false' || 'true' }} # zizmor: ignore[cache-poisoning]
           manylinux: auto
       - name: Upload wheels
         uses: actions/upload-artifact@v6
@@ -84,12 +84,12 @@ jobs:
           python-version: '3.x'
           architecture: ${{ matrix.platform.target }}
       - name: Build wheels
-        uses: PyO3/maturin-action@v1
+        uses: PyO3/maturin-action@04ac600d27cdf7a9a280dadf7147097c42b757ad # v1.50.1
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
           working-directory: bindings/python
-          sccache: 'true'
+          sccache: ${{ startsWith(github.ref, 'refs/tags') && 'false' || 'true' }} # zizmor: ignore[cache-poisoning]
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
@@ -114,12 +114,12 @@ jobs:
         with:
           python-version: '3.x'
       - name: Build wheels
-        uses: PyO3/maturin-action@v1
+        uses: PyO3/maturin-action@04ac600d27cdf7a9a280dadf7147097c42b757ad # v1.50.1
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --find-interpreter
           working-directory: bindings/python
-          sccache: 'true'
+          sccache: ${{ startsWith(github.ref, 'refs/tags') && 'false' || 'true' }} # zizmor: ignore[cache-poisoning]
       - name: Upload wheels
         uses: actions/upload-artifact@v6
         with:
@@ -136,7 +136,7 @@ jobs:
         with:
           python-version: 3.x
       - name: Build sdist
-        uses: PyO3/maturin-action@v1
+        uses: PyO3/maturin-action@04ac600d27cdf7a9a280dadf7147097c42b757ad # v1.50.1
         with:
           command: sdist
           args: --out dist
@@ -158,9 +158,9 @@ jobs:
         uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
         id: setup-uv
         with:
-          enable-cache: true
+          enable-cache: true # zizmor: ignore[cache-poisoning]
       - name: Cache deps
-        uses: actions/cache@v5
+        uses: actions/cache@v5 # zizmor: ignore[cache-poisoning]
         with:
           path: ~/.cargo
           key: python-test-${{ hashFiles('Cargo.lock', 'uv.lock') }}
@@ -195,6 +195,6 @@ jobs:
       # now uses trusted publishing
       - name: Publish package PyPI
         if: startsWith(github.ref, 'refs/tags/')
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
         with:
           skip-existing: true

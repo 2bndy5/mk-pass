@@ -10,7 +10,7 @@ updates:
     schedule:
       interval: "monthly"
     cooldown:
-      default-days: 5
+      default-days: 7
     groups:
       actions:
         patterns:
@@ -20,7 +20,7 @@ updates:
     schedule:
       interval: "monthly"
     cooldown:
-      default-days: 5
+      default-days: 7
     groups:
       uv-pip:
         patterns:
@@ -30,7 +30,7 @@ updates:
     schedule:
       interval: "monthly"
     cooldown:
-      default-days: 5
+      default-days: 7
     groups:
       cargo:
         patterns:
@@ -40,7 +40,7 @@ updates:
     schedule:
       interval: "monthly"
     cooldown:
-      default-days: 5
+      default-days: 7
     groups:
       yarn:
         patterns:
