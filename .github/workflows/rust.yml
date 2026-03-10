@@ -174,7 +174,7 @@ jobs:
           tar -a -c -v -f "${arc_name}" ${tgt} LICENSE
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: mk-pass-${{ matrix.target }}
           path: mk-pass-${{ matrix.target }}*
@@ -196,7 +196,7 @@ jobs:
       - name: Build API docs
         run: cargo doc --no-deps --lib -p mk-pass
       - name: Upload artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: rust-api-docs
           path: target/doc/mk_pass

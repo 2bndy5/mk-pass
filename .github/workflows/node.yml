@@ -125,7 +125,7 @@ jobs:
         run: ${{ matrix.settings.build }}
         shell: bash
       - name: Upload native module as artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: bindings-${{ matrix.settings.target }}
           path: |
@@ -134,7 +134,7 @@ jobs:
           if-no-files-found: error
       - name: Upload generated index.*s as artifact
         if: matrix.settings.target == 'armv7-unknown-linux-gnueabihf'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: generated-index
           path: bindings/node/index.*s
@@ -183,7 +183,7 @@ jobs:
             rm -rf target
             rm -rf .yarn/cache
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: bindings-freebsd
           path: ${{ env.ARTIFACT_PATH }}.node
@@ -218,7 +218,7 @@ jobs:
       - name: Combine binaries
         run: yarn universal
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: bindings-universal-apple-darwin
           path: ${{ env.ARTIFACT_PATH }}.node
