@@ -9,7 +9,7 @@ authors.workspace = true
 
 [dependencies]
 clap = { version = "4.5.60", features = ["derive"], optional = true }
-rand = "0.10.0"
+rand = "0.10.1"
 
 [features]
 clap = ["dep:clap"]
