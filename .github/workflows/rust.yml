@@ -63,6 +63,9 @@ jobs:
       name: test-coverage
       url: https://app.codecov.io/gh/2bndy5/mk-pass
     steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - name: Download coverage report artifact
         uses: actions/download-artifact@v8
         with:
