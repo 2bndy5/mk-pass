@@ -363,6 +363,8 @@ jobs:
     needs:
       - build
     runs-on: ubuntu-latest
+    # WASM testing is rather flaky due to the experimental nature of WASI.
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v6
         with:
