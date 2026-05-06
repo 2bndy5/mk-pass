@@ -381,7 +381,6 @@ __metadata:
     ava: "npm:7.0.0"
     oxlint: "npm:1.61.0"
     prettier: "npm:3.8.3"
-    tinybench: "npm:6.0.0"
     typescript: "npm:6.0.3"
   bin:
     mk-pass: cli.js
@@ -2935,13 +2934,6 @@ __metadata:
   version: 1.0.0
   resolution: "time-zone@npm:1.0.0"
   checksum: 10c0/d00ebd885039109011b6e2423ebbf225160927333c2ade6d833e9cc4676db20759f1f3855fafde00d1bd668c243a6aa68938ce71fe58aab0d514e820d59c1d81
-  languageName: node
-  linkType: hard
-
-"tinybench@npm:6.0.0":
-  version: 6.0.0
-  resolution: "tinybench@npm:6.0.0"
-  checksum: 10c0/d0a0c3cf53881d227e8bdeae03e456e6ad0abc362440d296efc8fa14f8acdb97304c547bae90db2c56d18697432f359785f5866ff35ed2ae539380f8f5d4eb19
   languageName: node
   linkType: hard
 
