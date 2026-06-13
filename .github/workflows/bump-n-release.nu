@@ -55,9 +55,7 @@ def bump-version [
     print 'Updated version in bindings/node/package.json'
     cd '../..'
     print "Updating Cargo.lock file"
-    if (not $IN_CI) {
-        ^cargo update --workspace
-    }
+    ^cargo update --workspace
     $result | get new
 }
 
