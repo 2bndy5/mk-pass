@@ -120,6 +120,7 @@ dist
 Cargo.lock
 
 *.node
+*.wasm
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -130,4 +131,7 @@ Cargo.lock
 /npm
 /index.js
 /index.d.ts
-*.wasm
+/mk-pass.wasi-browser.js
+/mk-pass.wasi.cjs
+/wasi-worker-browser.mjs
+/wasi-worker.mjs
