@@ -109,7 +109,7 @@ jobs:
           use-cache: ${{ !startsWith(github.ref, 'refs/tags/') }}
       - name: Install cargo-binstall
         if: ${{ contains(matrix.settings.target, 'musl') }}
-        uses: cargo-bins/cargo-binstall@dc19f1e48450eefe5a29b8da6c6b00a87d730b37 # v1.18.1
+        uses: cargo-bins/cargo-binstall@aaa84a43aec4955a42c5ffc65d258961e39f276e # v1.19.1
       - name: Install cargo-zigbuild
         if: ${{ contains(matrix.settings.target, 'musl') }}
         env:
@@ -149,7 +149,7 @@ jobs:
           persist-credentials: false
       - name: Build
         id: build
-        uses: cross-platform-actions/action@233156312992f3f169d8d0c633c21d12a5d30455 # v1.0.0
+        uses: cross-platform-actions/action@0c165ad7eb2d6a7e8552d6af5aad2bbedfc646b0 # v1.1.0
         env:
           DEBUG: napi:*
           RUSTUP_IO_THREADS: 1
@@ -160,7 +160,9 @@ jobs:
           cpu_count: 3
           environment_variables: DEBUG RUSTUP_IO_THREADS
           shell: bash
-          run: |
+      - name: Build
+        shell: cpa.sh {0}
+        run: |-
             sudo pkg install -y -f curl node libnghttp2 npm yarn cmake
             sudo npm install -g yarn --ignore-scripts
             curl https://sh.rustup.rs -sSf --output rustup.sh
