@@ -30,10 +30,15 @@ permissions: {}
 jobs:
   wheels:
     runs-on: ${{ matrix.platform.runner }}
+    name: wheels (${{ matrix.python.feature }}, ${{ matrix.platform.runner }}, ${{ matrix.platform.target }})
     strategy:
       fail-fast: false
       matrix:
-        python-minor: ['10']
+        python:
+          - version: '3.10'
+            feature: pyo3/abi3-py310
+          - version: '3.15t'
+            feature: pyo3/abi3t-py315
         platform:
           - runner: windows-latest
             target: x64
@@ -58,7 +63,17 @@ jobs:
           - runner: ubuntu-latest
             target: ppc64le
         include:
-          - python-minor: '11'
+          # insert these manually until python 3.11 is the minimum supported python version
+          - python:
+              version: '3.11'
+              feature: pyo3/abi3-py311
+            platform:
+              runner: windows-11-arm
+              target: aarch64
+              py-arch: arm64
+          - python:
+              version: '3.15t'
+              feature: pyo3/abi3t-py315
             platform:
               runner: windows-11-arm
               target: aarch64
@@ -68,9 +83,12 @@ jobs:
         with:
           persist-credentials: false
       - uses: actions/setup-python@v6
+        id: setup-python
         with:
-          python-version: "3.${{ matrix.python-minor }}"
+          python-version: ${{ matrix.python.version }}
           architecture: ${{ matrix.platform.py-arch || null }}
+          # remove when python 3.15 goes stable
+          allow-prereleases: ${{ startsWith(matrix.python.version, '3.15') }}
       - name: Build wheels
         uses: PyO3/maturin-action@e83996d129638aa358a18fbd1dfb82f0b0fb5d3b # v1.51.0
         with:
@@ -78,8 +96,8 @@ jobs:
           args: >-
             --release
             --out dist
-            --interpreter 3.${{ matrix.python-minor }}
-            --features "pyo3/abi3-py3${{ matrix.python-minor }}"
+            --interpreter ${{ matrix.python.version }}
+            --features ${{ matrix.python.feature }}
           working-directory: bindings/python
           sccache: ${{ startsWith(github.ref, 'refs/tags') && 'false' || 'true' }} # zizmor: ignore[cache-poisoning]
           manylinux: auto
