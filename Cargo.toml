@@ -11,7 +11,7 @@ repository = "https://github.com/2bndy5/mk-pass"
 authors = ["Brendan Doherty"]
 
 [workspace.dependencies]
-pyo3 = "0.28.3"
+pyo3 = { version = "0.29.0", features = ["extension-module"] }
 
 [profile.release]
 lto = true

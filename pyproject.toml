@@ -1,7 +1,7 @@
 [project]
 name = "mk-pass-ws"
 version = "0.0.0+private-virtual"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = []
 classifiers = ["Private :: Do Not Upload"]
 
@@ -16,11 +16,9 @@ members = ["bindings/python", "docs"]
 docs = ["cli-gen"]
 py = ["mk-pass[test]"]
 dev = [
-    "maturin==1.13.1",
-    "mypy==2.0.0",
-    "patchelf==0.17.2.4 ; sys_platform == 'linux'",
+    "mypy==2.1.0",
     "pre-commit==4.3.0",
-    "ruff==0.15.11",
+    "ruff==0.15.17",
     "types-pyyaml==6.0.12.20250915",
 ]
 
