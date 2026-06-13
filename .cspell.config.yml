@@ -40,6 +40,7 @@ words:
   - msvc
   - multiarch
   - musleabihf
+  - musllinux
   - mypy
   - napi
   - nextest
