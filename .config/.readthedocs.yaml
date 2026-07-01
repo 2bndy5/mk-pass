@@ -36,7 +36,7 @@ build:
     build:
       html:
         - cargo doc -p mk-pass --lib --no-deps --target-dir docs/docs/rust-api
-        - yarn docs
+        - npx yarn docs
         - >-
           cd bindings/cpp &&
           ${HOME}/.local/bin/doxygen
