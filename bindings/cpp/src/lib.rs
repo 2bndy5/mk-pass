@@ -30,6 +30,9 @@ pub struct PasswordRequirements {
 
     /// Allow characters to be used more than once?
     pub allow_repeats: bool,
+
+    /// Use only hexadecimal letters (a-f, A-F) for letters?
+    pub hex_letters: bool,
 }
 
 impl From<&PasswordRequirements> for ::mk_pass::PasswordRequirements {
@@ -40,6 +43,7 @@ impl From<&PasswordRequirements> for ::mk_pass::PasswordRequirements {
             specials: value.specials,
             first_is_letter: value.first_is_letter,
             allow_repeats: value.allow_repeats,
+            hex_letters: value.hex_letters,
         }
     }
 }
@@ -52,6 +56,7 @@ impl From<PasswordRequirements> for ::mk_pass::PasswordRequirements {
             specials: value.specials,
             first_is_letter: value.first_is_letter,
             allow_repeats: value.allow_repeats,
+            hex_letters: value.hex_letters,
         }
     }
 }
@@ -64,6 +69,7 @@ impl From<::mk_pass::PasswordRequirements> for PasswordRequirements {
             specials: value.specials,
             first_is_letter: value.first_is_letter,
             allow_repeats: value.allow_repeats,
+            hex_letters: value.hex_letters,
         }
     }
 }

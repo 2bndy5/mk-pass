@@ -40,13 +40,23 @@ pub mod mk_pass {
 
         /// Allow characters to be used more than once?
         pub allow_repeats: bool,
+
+        /// Use only hexadecimal letters (a-f, A-F) for letters?
+        pub hex_letters: bool,
     }
 
     #[pymethods]
     impl PasswordRequirements {
         #[new]
         #[pyo3(
-        signature = (length = 16, decimal=1, specials=1, first_is_letter = true, allow_repeats = false)
+        signature = (
+            length = 16,
+            decimal=1,
+            specials=1,
+            first_is_letter = true,
+            allow_repeats = false,
+            hex_letters = false,
+        )
     )]
         pub fn new(
             length: Option<i32>,
@@ -54,6 +64,7 @@ pub mod mk_pass {
             specials: Option<i32>,
             first_is_letter: Option<bool>,
             allow_repeats: Option<bool>,
+            hex_letters: Option<bool>,
         ) -> Self {
             Self {
                 length: length.unwrap_or(16) as u16,
@@ -61,6 +72,7 @@ pub mod mk_pass {
                 specials: specials.unwrap_or(1) as u16,
                 first_is_letter: first_is_letter.unwrap_or(true),
                 allow_repeats: allow_repeats.unwrap_or_default(),
+                hex_letters: hex_letters.unwrap_or_default(),
             }
         }
 
@@ -117,6 +129,7 @@ pub mod mk_pass {
                 specials: value.specials,
                 first_is_letter: value.first_is_letter,
                 allow_repeats: value.allow_repeats,
+                hex_letters: value.hex_letters,
             }
         }
     }
@@ -129,6 +142,7 @@ pub mod mk_pass {
                 specials: value.specials,
                 first_is_letter: value.first_is_letter,
                 allow_repeats: value.allow_repeats,
+                hex_letters: value.hex_letters,
             }
         }
     }

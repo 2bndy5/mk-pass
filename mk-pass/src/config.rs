@@ -51,6 +51,19 @@ pub struct PasswordRequirements {
         )
     )]
     pub allow_repeats: bool,
+
+    /// Use only hexadecimal letters (a-f, A-F) for letters?
+    #[cfg_attr(
+        feature = "clap",
+        arg(
+            short = 'x',
+            long,
+            help = "Use only hexadecimal letters (a-f, A-F) for letters.",
+            long_help = "Use only hexadecimal letters (a-f, A-F) for letters.\
+            \n\nBy default, all letters (a-z, A-Z) are used.",
+            action = ArgAction::SetTrue
+    ))]
+    pub hex_letters: bool,
 }
 
 impl PasswordRequirements {
@@ -64,6 +77,7 @@ impl PasswordRequirements {
     /// 1. `length` is not less than 10
     /// 2. To avoid repetitions, `length` is not more than
     ///
+    ///    - 22 if only hexadecimal digits are used (no decimal integers or special characters)
     ///    - 52 if only letters (no decimal integers or special characters) are used
     ///    - 62 if only letters and decimal integers are used
     ///    - 68 if only letters and special characters are used
@@ -136,6 +150,7 @@ impl PasswordRequirements {
             specials: self.specials.min(max_special),
             first_is_letter: self.first_is_letter,
             allow_repeats: self.allow_repeats,
+            hex_letters: self.hex_letters,
         }
     }
 }
@@ -149,6 +164,7 @@ impl Default for PasswordRequirements {
             specials: 1,
             first_is_letter: true,
             allow_repeats: false,
+            hex_letters: false,
         }
     }
 }
