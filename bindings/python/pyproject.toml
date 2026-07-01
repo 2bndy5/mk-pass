@@ -39,7 +39,7 @@ tracker = "https://github.com/2bndy5/mk-pass/issues"
 
 [project.optional-dependencies]
 test = [
-    "pytest==9.0.3",
+    "pytest==9.1.1",
 ]
 
 [tool.maturin]
