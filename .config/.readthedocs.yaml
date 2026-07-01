@@ -21,9 +21,6 @@ build:
         curl -LsSf https://astral.sh/uv/install.sh | sh
       - ${HOME}/.local/bin/uv sync --all-groups
     post_create_environment:
-      - corepack enable
-      - corepack prepare --activate yarn@4.12.0
-      - asdf reshim nodejs
       # Install doxygen from source distributions (conda forge does not keep up-to-date doxygen releases)
       - >
         DOXYGEN_VERSION="1.15.0" &&
@@ -34,8 +31,8 @@ build:
         tar xf doxygen.tar &&
         mv doxygen-${DOXYGEN_VERSION}/bin/doxygen ${HOME}/.local/bin/
     pre_build:
-      - yarn install
-      - yarn build:debug
+      - npx yarn install
+      - npx yarn build:debug
     build:
       html:
         - cargo doc -p mk-pass --lib --no-deps --target-dir docs/docs/rust-api
