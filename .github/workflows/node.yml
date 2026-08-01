@@ -86,7 +86,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup node
-        uses: actions/setup-node@v6 # zizmor: ignore[cache-poisoning]
+        uses: actions/setup-node@v7 # zizmor: ignore[cache-poisoning]
         with:
           node-version: 24
           cache: ${{ !startsWith(github.ref, 'refs/tags/') && 'yarn' || '' }}
@@ -113,7 +113,7 @@ jobs:
           use-cache: ${{ !startsWith(github.ref, 'refs/tags/') }}
       - name: Install cargo-binstall
         if: ${{ contains(matrix.settings.target, 'musl') }}
-        uses: cargo-bins/cargo-binstall@732870f031d2fb36309d0deaf36abcc704a7be65 # v1.20.1
+        uses: cargo-bins/cargo-binstall@e00d2c94cc0067b77737821097a62d91c0301baa # v1.21.1
       - name: Install cargo-zigbuild
         if: ${{ contains(matrix.settings.target, 'musl') }}
         env:
@@ -216,7 +216,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup node
-        uses: actions/setup-node@v6 # zizmor: ignore[cache-poisoning]
+        uses: actions/setup-node@v7 # zizmor: ignore[cache-poisoning]
         with:
           node-version: 24
           cache: ${{ !startsWith(github.ref, 'refs/tags/') && 'yarn' || '' }}
@@ -269,7 +269,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
           cache: yarn # zizmor: ignore[cache-poisoning]
@@ -316,7 +316,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
           cache: yarn # zizmor: ignore[cache-poisoning]
@@ -358,7 +358,7 @@ jobs:
         run: ls -R .
         shell: bash
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@06116385d9baf250c9f4dcb4858b16962ea869c3 # v4.1.0
+        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
         if: ${{ contains(matrix.target, 'armv7') }}
         with:
           platforms: all
@@ -387,7 +387,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: yarn # zizmor: ignore[cache-poisoning]
@@ -435,7 +435,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           package-manager-cache: false
