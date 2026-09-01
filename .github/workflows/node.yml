@@ -113,7 +113,7 @@ jobs:
           use-cache: ${{ !startsWith(github.ref, 'refs/tags/') }}
       - name: Install cargo-binstall
         if: ${{ contains(matrix.settings.target, 'musl') }}
-        uses: cargo-bins/cargo-binstall@e00d2c94cc0067b77737821097a62d91c0301baa # v1.21.1
+        uses: cargo-bins/cargo-binstall@75b4bfae1b2c753a6806bbce6e6cb89b602de33c # v1.22.0
       - name: Install cargo-zigbuild
         if: ${{ contains(matrix.settings.target, 'musl') }}
         env:
@@ -164,7 +164,7 @@ jobs:
           persist-credentials: false
       - name: Build
         id: build
-        uses: cross-platform-actions/action@5ea7e8e4677bd726033a10b094ba1c5762b15dee # v1.3.0
+        uses: cross-platform-actions/action@24ef01df165c76df1ed2b9f9e9212e78dc2fc963 # v1.4.0
         env:
           DEBUG: napi:*
           RUSTUP_IO_THREADS: 1
