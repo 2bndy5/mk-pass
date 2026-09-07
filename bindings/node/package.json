@@ -61,13 +61,13 @@
   "devDependencies": {
     "@emnapi/core": "1.11.1",
     "@emnapi/runtime": "1.11.1",
-    "@napi-rs/cli": "3.7.2",
+    "@napi-rs/cli": "3.9.0",
     "@oxc-node/core": "0.1.0",
     "@tybys/wasm-util": "0.10.3",
     "ava": "8.0.1",
-    "oxlint": "1.71.0",
-    "prettier": "3.8.4",
-    "typescript": "6.0.3"
+    "oxlint": "1.82.0",
+    "prettier": "3.9.6",
+    "typescript": "7.0.2"
   },
   "ava": {
     "extensions": [
