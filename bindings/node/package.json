@@ -65,7 +65,7 @@
     "@oxc-node/core": "0.1.0",
     "@tybys/wasm-util": "0.10.3",
     "ava": "8.0.1",
-    "oxlint": "1.82.0",
+    "oxlint": "1.81.0",
     "prettier": "3.9.6",
     "typescript": "7.0.2"
   },
