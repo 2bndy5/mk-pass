@@ -151,6 +151,7 @@ jobs:
           path: |
             bindings/node/mk-pass.wasi-browser.js
             bindings/node/mk-pass.wasi.cjs
+            bindings/node/mk-pass.wasi.d.cts
             bindings/node/wasi-worker-browser.mjs
             bindings/node/wasi-worker.mjs
           if-no-files-found: error
