@@ -415,7 +415,6 @@ jobs:
         run: ls -R .
         shell: bash
       - name: Test bindings
-        continue-on-error: true
         run: yarn test
         env:
           NAPI_RS_FORCE_WASI: true
