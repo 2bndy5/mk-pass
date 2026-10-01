@@ -151,6 +151,7 @@ jobs:
           path: |
             bindings/node/mk-pass.wasi-browser.js
             bindings/node/mk-pass.wasi.cjs
+            bindings/node/mk-pass.wasi.d.cts
             bindings/node/wasi-worker-browser.mjs
             bindings/node/wasi-worker.mjs
           if-no-files-found: error
@@ -206,40 +207,6 @@ jobs:
           path: ${{ env.ARTIFACT_PATH }}.node
           if-no-files-found: error
 
-  universal-macOS:
-    name: Build universal macOS binary
-    needs:
-      - build
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-      - name: Setup node
-        uses: actions/setup-node@v7 # zizmor: ignore[cache-poisoning]
-        with:
-          node-version: 24
-          cache: ${{ !startsWith(github.ref, 'refs/tags/') && 'yarn' || '' }}
-      - name: Install dependencies
-        run: yarn install
-      - name: Download macOS x64 artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: bindings-x86_64-apple-darwin
-          path: bindings/node
-      - name: Download macOS arm64 artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: bindings-aarch64-apple-darwin
-          path: bindings/node
-      - name: Combine binaries
-        run: yarn universal
-      - name: Upload artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: bindings-universal-apple-darwin
-          path: ${{ env.ARTIFACT_PATH }}.node
-          if-no-files-found: error
   test-macOS-windows-binding:
     name: Test bindings on ${{ matrix.settings.target }} - node@${{ matrix.node }}
     needs:
@@ -416,7 +383,7 @@ jobs:
       - name: Test bindings
         run: yarn test
         env:
-          NAPI_RS_FORCE_WASI: 1
+          NAPI_RS_FORCE_WASI: true
   publish:
     name: Publish
     runs-on: ubuntu-latest
@@ -426,7 +393,6 @@ jobs:
     needs:
       - build
       - build-freebsd
-      - universal-macOS
       - test-macOS-windows-binding
       - test-linux-binding
       - test-wasi

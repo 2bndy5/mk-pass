@@ -133,5 +133,6 @@ Cargo.lock
 /index.d.ts
 /mk-pass.wasi-browser.js
 /mk-pass.wasi.cjs
+/mk-pass.wasi.d.cts
 /wasi-worker-browser.mjs
 /wasi-worker.mjs
