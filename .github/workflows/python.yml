@@ -115,8 +115,8 @@ jobs:
             --out dist
             --interpreter ${{ matrix.python.version }}
             --features ${{ matrix.python.feature }}
-          working-directory: bindings/python
             ${{ runner.os == 'Linux' && matrix.platfotm.target != 'ppc64le' && '--zig' || '' }}
+          working-directory: bindings/python
           # zizmor: ignore[cache-poisoning]
           sccache: ${{ startsWith(github.ref, 'refs/tags') && 'false' || 'true' }}
           manylinux: ${{ matrix.platform.manylinux || 'auto' }}
