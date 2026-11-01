@@ -20,6 +20,9 @@ on:
 
 permissions: {}
 
+env:
+  CLANG_FORMAT_VERSION: 19
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -41,7 +44,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install clang-format
-        run: sudo apt-get install clang-format-14
+        run: sudo apt-get install clang-format-${CLANG_FORMAT_VERSION}
       - name: Setup nushell
         uses: hustcer/setup-nu@9215c80adb545a85c419d5085b76eb6d082f49e7 # v3.27
         with:
@@ -52,8 +55,9 @@ jobs:
           let files = glob 'bindings/cpp/*/*.{cpp,hpp}'
           print "Formatting the following files:"
           print $files
+          let tool = $"clang-format-($env.CLANG_FORMAT_VERSION)"
           for f in $files {
-              clang-format-14 --dry-run -Werror --style file $f
+              ^$tool --dry-run -Werror --style file $f
           }
 
   docs:
