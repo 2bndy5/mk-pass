@@ -58,14 +58,14 @@
     "version": "napi version"
   },
   "devDependencies": {
-    "@emnapi/core": "2.0.0-beta.2",
-    "@emnapi/runtime": "2.0.0-beta.2",
+    "@emnapi/core": "2.0.0-alpha.5",
+    "@emnapi/runtime": "2.0.0-alpha.5",
     "@napi-rs/cli": "3.10.9",
     "@napi-rs/wasm-runtime": "1.2.5",
     "@oxc-node/core": "1.0.1",
     "@tybys/wasm-util": "0.10.4",
     "ava": "8.1.2",
-    "emnapi": "2.0.0-beta.2",
+    "emnapi": "2.0.0-alpha.5",
     "oxlint": "1.89.0",
     "prettier": "3.9.10",
     "typescript": "6.0.3"
